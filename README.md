@@ -1,6 +1,9 @@
 
+# Big Blue Parking Genie
 
-## An explanation of the organization and name scheme for the workspace
+This app creates a marketplace for parking space/lot owners to list parking spaces for local events. 
+
+## Workspace layout
 
 The Big Blue Parking Genie web app will be stored in this repository. 
 
