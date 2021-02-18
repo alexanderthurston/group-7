@@ -1,7 +1,7 @@
 
 # Big Blue Parking Genie
 
-This app creates a marketplace for parking space/lot owners to list parking spaces for local events. 
+This app is a marketplace for parking space/lot owners to rent parking spaces for local events. 
 
 ## Workspace layout
 
