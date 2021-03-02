@@ -121,4 +121,6 @@ These credentials allow access to perform all actions as a customer, supervisor,
 
 ## Other development notes, as needed
 High Fidelity Prototype - Database Diagram
-Low Fidelity Prototype - 
+Low Fidelity Prototype - UX Diagram
+
+See grading instructions in /docs
