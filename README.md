@@ -120,3 +120,5 @@ Login to the web app using the following credentials. Username: SystemTest, Pass
 These credentials allow access to perform all actions as a customer, supervisor, owner, and attendant in a test environment. 
 
 ## Other development notes, as needed
+High Fidelity Prototype - Database Diagram
+Low Fidelity Prototype - 
