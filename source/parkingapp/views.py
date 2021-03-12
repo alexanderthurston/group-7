@@ -1,8 +1,12 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from django.utils import timezone
+from django.urls import reverse
 
 # Homepage
-def index(request):
+def index(request, account_id):
+    account = get_object_or_404(account_id)
+    context = {"logged_in": account.logged_in,
+               }
     return render(request, "parkingapp/index.html")
 
 
@@ -12,7 +16,7 @@ def sign_in(request):
 
 
 # First time sign-up or updating account info
-def sign_up_or_update_account(request):
+def create_or_update_account(request):
     pass
 
 
@@ -22,11 +26,15 @@ def account(request):
 
 
 # Reserve parking spot
-def reserve_spot(request):
+def reserve(request):
     pass
 
 
 # List lot and spots
-def list_spot(request):
+def list(request):
     pass
 
+
+# Supervisor overview
+def overview(request):
+    pass
