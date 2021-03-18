@@ -11,7 +11,7 @@ def index(request, account_id):
 
 
 # Login procedures
-def sign_in(request):
+def sign_in(request, username):
     pass
 
 

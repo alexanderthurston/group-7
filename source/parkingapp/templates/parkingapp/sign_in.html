@@ -7,6 +7,21 @@
     <link rel="stylesheet" type="text/css" href="{% static 'parkingapp/style.css' %}"/>
 </head>
 <body>
+    <h1>Welcome to the Big Blue Parking Genie!</h1>
+    {%comment%}
+    Not sure what to do here with your login procedures Nate.
+    {%endcomment%}
 
+    <form action="{% url 'parkingapp:sign_in' %}" method="post">
+        {% csrf token %}
+
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" value="Username">
+
+        <label for="password">Password</label>
+        <input type="text" name="password" id="password" value="Password">
+
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>
