@@ -21,8 +21,11 @@ def create_or_update_account(request):
 
 
 # Account details
-def account(request):
-    pass
+def account(request, account_id):
+    account = User.objects.get(pk=account_id)
+    context = {'account': account, }
+    return render(request, "parkingapp/account.html", context)
+
 
 
 # Reserve parking spot

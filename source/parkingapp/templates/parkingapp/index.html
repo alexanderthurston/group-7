@@ -11,16 +11,29 @@
     <div>
         <h1>Big Blue Parking Genie</h1>
         <div>
-            <span><button type="button">Portal</button><button type="button">Account</button></span>
+            <span>
+                <a><button>Portal</button></a>
+                <a href="{% url 'parkingapp:account' account.id%}"><button>Account</button></a>
+                <a><button>Find Parking</button></a>
+                <a><button>Rent A Lot</button></a>
+            </span>
+            <h2>Your Reservations</h2>
+        </div>
+
+        <div>
+            <span>
+                <a><button>Lot Assistant Home</button></a>
+                <a><button>Supervisor Home</button></a>
+            </span>
         </div>
 
     </div>
 
     {% else %}
-    <div class="black stuff-box shadowed">
-        <h1>Please login to access this page.</h1>
-        <a href="sign-in">Click here to sign in.</a>
-    </div>
+        <div class="black stuff-box shadowed">
+            <h1>Please login to access this page.</h1>
+            <a href="sign-in"><button>Sign-In</button></a>
+        </div>
     {% endif %}
 </body>
 </html>
