@@ -7,7 +7,10 @@ class User(models.Model):
     firstName = models.CharField(max_length=50)
     lastName = models.CharField(max_length=50)
     phoneNumber = models.IntegerField()
-    logged_in = False
+    logged_in = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.username
 
 
 class UserType(models.Model):
@@ -42,7 +45,7 @@ class TransactionHistory(models.Model):
     eventID = models.ForeignKey(Event, on_delete=models.CASCADE)
     parkingSpotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
     transDate = models.DateTimeField()
-    amount = models.DecimalField()
+    amount = models.DecimalField(decimal_places=2, max_digits=5)
 
 class TransactionType(models.Model):
     transHistoryID = models.ForeignKey(TransactionHistory, on_delete=models.CASCADE)

@@ -12,8 +12,8 @@
     Not sure what to do here with your login procedures Nate.
     {%endcomment%}
 
-    <form action="{% url 'parkingapp:sign_in' %}" method="post">
-        {% csrf token %}
+    <form action="{% url 'parkingapp:index'%}" method="post">
+        {% csrf_token %}
 
         <label for="username">Username</label>
         <input type="text" name="username" id="username" value="Username">
@@ -23,5 +23,9 @@
 
         <input type="submit" value="Submit">
     </form>
+
+    <h2>Don't have an account?</h2>
+    <button type="button">Create an account</button>
+
 </body>
 </html>
