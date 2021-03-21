@@ -2,19 +2,20 @@
 <html lang="en">
 {% load static %}
 <head>
-    <meta charset="utf-8"/>
-    <title>BigBlueParkingGenie</title>
+    <meta charset="UTF-8">
+    <title>Your Account Info</title>
     <link rel="stylesheet" type="text/css" href="{% static 'parkingapp/style.css' %}"/>
 </head>
 <body>
+
     {% if account.logged_in %}
     <div>
         <h1>Big Blue Parking Genie</h1>
         <div>
             <span> <!--- Directory --->
                 <a><button>Portal</button></a>
-                <a href="{% url 'parkingapp:account-info' account.id %}"><button>Account</button></a>
-                <a href="{% url 'parkingapp:reserve-spot' account.id %}"><button>Find Parking</button></a>
+                <a href="{% url 'parkingapp:account' account.id %}"><button>Account</button></a>
+                <a href="{% url 'parkingapp:reserve' account.id %}"><button>Find Parking</button></a>
                 <a href="{% url 'parkingapp:list-lot' account.id %}"><button>Rent A Lot</button></a>
             </span>
             <!--- view specific code here --->
@@ -31,8 +32,11 @@
     {% else %}
         <div class="black stuff-box shadowed">
             <h1>Please login to access this page.</h1>
-            <a href=""><button>Sign-In</button></a>
+            <a href="{% url 'parkingapp:sign-in' %}"><button>Sign-In</button></a>
         </div>
     {% endif %}
+
+
+
 </body>
 </html>

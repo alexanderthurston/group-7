@@ -2,8 +2,8 @@
 <html lang="en">
 {% load static %}
 <head>
-    <meta charset="utf-8"/>
-    <title>BigBlueParkingGenie</title>
+    <meta charset="UTF-8">
+    <title>List Your Lot</title>
     <link rel="stylesheet" type="text/css" href="{% static 'parkingapp/style.css' %}"/>
 </head>
 <body>
@@ -13,11 +13,18 @@
         <div>
             <span> <!--- Directory --->
                 <a><button>Portal</button></a>
-                <a href="{% url 'parkingapp:account-info' account.id %}"><button>Account</button></a>
-                <a href="{% url 'parkingapp:reserve-spot' account.id %}"><button>Find Parking</button></a>
+                <a href="{% url 'parkingapp:account' account.id %}"><button>Account</button></a>
+                <a href="{% url 'parkingapp:reserve' account.id %}"><button>Find Parking</button></a>
                 <a href="{% url 'parkingapp:list-lot' account.id %}"><button>Rent A Lot</button></a>
             </span>
-            <!--- view specific code here --->
+            <form method="post">
+                <label for="address">Lot Address</label>
+                <input type="text" id="address">
+
+                <label for="spot-amount">Number of Parking Spots</label>
+                <input type="text" id="spot-amount">
+
+            </form>
         </div>
 
         <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->
@@ -31,8 +38,9 @@
     {% else %}
         <div class="black stuff-box shadowed">
             <h1>Please login to access this page.</h1>
-            <a href=""><button>Sign-In</button></a>
+            <a href="{% 'parkingapp:sign-in' %}"><button>Sign-In</button></a>
         </div>
     {% endif %}
+
 </body>
 </html>

@@ -15,28 +15,34 @@ def sign_in(request):
     return render(request, "parkingapp/sign_in.html")
 
 
-# First time sign-up or updating account info
-def create_or_update_account(request):
+# First time sign-up
+def create_account(request):
     pass
 
+# Update account info
+def update_account(request):
+    pass
 
 # Account details
-def account(request, account_id):
+def account_info(request, account_id):
     account = User.objects.get(pk=account_id)
     context = {'account': account, }
-    return render(request, "parkingapp/account.html", context)
+    return render(request, "parkingapp/account_info.html", context)
 
 
 
 # Reserve parking spot
-def reserve(request):
+def reserve_spot(request):
     pass
 
 
 # List lot and spots
-def list(request):
+def list_lot(request):
     pass
 
+# Manage lot
+def manage_lot(request):
+    pass
 
 # Supervisor overview
 def overview(request):

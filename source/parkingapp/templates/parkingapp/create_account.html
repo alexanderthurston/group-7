@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>BigBlueParkingGenie</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'parkingapp/style.css' %}"/>
+</head>
+<body>
+    <h1>Create an Account</h1>
+    <form method="post">
+        <label for="name">Name</label>
+        <input type="text" id="name">
+
+        <label for="email">Email</label>
+        <input type="text" id="email">
+
+        <label for="username">Username</label>
+        <input type="text" id="username">
+
+        <label for="password">Password</label>
+        <input type="text" id="password">
+
+
+        <label for="submit">Create Account</label>
+        <input type="submit" id="submit">
+    </form>
+
+</body>
+</html>

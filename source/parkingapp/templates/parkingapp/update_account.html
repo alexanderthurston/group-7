@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if account.logged_in %}
+        <h1>Edit Account Info</h1>
+        <form method="post">
+            <label for="name">Name</label>
+            <input type="text" id="name">
+
+            <label for="email">Email</label>
+            <input type="text" id="email">
+
+            <label for="username">Username</label>
+            <input type="text" id="username">
+
+            <label for="password">Password</label>
+            <input type="text" id="password">
+
+
+            <label for="submit">Create Account</label>
+            <input type="submit" id="submit">
+        </form>
+    {% else %}
+        <div class="black stuff-box shadowed">
+            <h1>Please login to access this page.</h1>
+            <a href="sign-in"><button>Sign-In</button></a>
+        </div>
+    {% endif %}
+
+</body>
+</html>
