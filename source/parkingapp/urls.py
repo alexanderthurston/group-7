@@ -10,6 +10,7 @@ urlpatterns = [
     path('create-account', views.create_account, name="create-account"),
     path('update-account/<int:account_id>', views.update_account, name="update-account"),
     path('account-info/<int:account_id>', views.account_info, name="account-info"),
+    path('transfer-funds/<int:account_id>', views.transfer_funds, name="transfer-funds"),
     path('lot-attendant-home/<account_id>', views.lot_attendant_home, name="lot-attendant-home"),
     path('reserve-spot/<int:account_id>', views.reserve_spot, name="reserve-spot"),
     path('list-lot/<int:account_id>', views.list_lot, name="list-lot"),
