@@ -46,7 +46,7 @@ def find_account(request):
 def update_account(request, account_id):
     account = User.objects.get(pk=account_id)
     context = {'account': account, }
-    return render(request, "parkingapp/account_info.html", context)
+    return render(request, "parkingapp/update_account.html", context)
 
 
 # Account details
@@ -55,7 +55,10 @@ def account_info(request, account_id):
     context = {'account': account, }
     return render(request, "parkingapp/account_info.html", context)
 
-
+def transfer_funds(request, account_id):
+    account = User.objects.get(pk=account_id)
+    context = {'account': account, }
+    return render(request, "parkingapp/transfer_funds.html", context)
 # Reserve parking spot
 def reserve_spot(request, account_id):
     account = User.objects.get(pk=account_id)
