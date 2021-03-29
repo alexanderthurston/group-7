@@ -27,6 +27,9 @@
                 </form>
             </div>
         </div>
+        {% for message in messages %}
+            <p>{{message}}</p>
+        {% endfor %}
         <div class="fixed-bottom bg-light row justify-content-center align-items-center">
             <h2 class="text-center m-3">Don't have an account?</h2>
             <a href="{% url 'parkingapp:sign-up' %}" ><button type="button" class="btn btn-primary">Create an account</button></a>
