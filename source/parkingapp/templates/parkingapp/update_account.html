@@ -11,7 +11,7 @@
 
         <div class="container m-auto">
             <div class="rounded bg-light row justify-content-center  p-3">
-                <form class="form" action="{% url 'parkingapp:create-account'%}" method="post">
+                <form class="form" action="" method="POST">
                     {% csrf_token %}
                     <ul style="list-style-type: none;">
                         <li>
@@ -43,12 +43,6 @@
                 </form>
             </div>
         </div>
-        {% comment %}
-        <div class="black stuff-box shadowed">
-            <h1>Please login to access this page.</h1>
-            <a href="sign-in"><button>Sign-In</button></a>
-        </div>
-        {% endcomment %}
     </div>
 </body>
 

@@ -13,7 +13,7 @@
 
         <div class="container m-auto">
             <div class="rounded bg-light row justify-content-center  p-3">
-                <form class="form" action="{% url 'parkingapp:find-account'%}" method="post">
+                <form class="form" action="" method="POST">
                     {% csrf_token %}
 
                     <label for="username" class="text-primary">Username:</label><br>
@@ -27,6 +27,9 @@
                 </form>
             </div>
         </div>
+        {% for message in messages %}
+            <p>{{message}}</p>
+        {% endfor %}
         <div class="fixed-bottom bg-light row justify-content-center align-items-center">
             <h2 class="text-center m-3">Don't have an account?</h2>
             <a href="{% url 'parkingapp:sign-up' %}" ><button type="button" class="btn btn-primary">Create an account</button></a>
