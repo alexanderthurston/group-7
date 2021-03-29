@@ -2,24 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-
-# class User(models.Model):
-#     username = models.CharField(max_length=50)
-#     password = models.CharField(max_length=20)
-#     firstName = models.CharField(max_length=50)
-#     lastName = models.CharField(max_length=50)
-#     email = models.EmailField(default="")
-#     phoneNumber = models.IntegerField(default=0)
-#     balance = models.IntegerField(default=0)
-#     logged_in = models.BooleanField(default=False)
-
-#     def __str__(self):
-#         return self.username
-
-# class UserType(models.Model):
-#     userID = models.ForeignKey(User, on_delete=models.CASCADE)
-#     typeName = models.CharField(max_length=10)     
+ 
 
 # This is how we store data that Django's default User class doesn't have built in.
 # We can add more fields to this later if we need to
@@ -35,7 +18,7 @@ from django.dispatch import receiver
 # @receiver(post_save, sender=User)
 # def save_user_profile(sender, instance, **kwargs):
 #     instance.profile.save()
-    
+
 
 class Event(models.Model):
     userID = models.ForeignKey(User, on_delete=models.CASCADE)

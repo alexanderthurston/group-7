@@ -16,7 +16,7 @@
                     <a href="{% url 'parkingapp:account-info' %}"><button type="button" class="btn btn-light active">Account</button></a>
                     <a href="{% url 'parkingapp:reserve-spot' %}"><button type="button" class="btn btn-light">Find Parking</button></a>
                     <a href="{% url 'parkingapp:list-lot' %}"><button type="button" class="btn btn-light">List Your Lot</button></a>
-                    <a href="{% url 'parkingapp:sign-in'%}"><button type="button" class="btn btn-danger">Log Out</button></a>
+                    <a href="{% url 'parkingapp:sign-out'%}"><button type="button" class="btn btn-danger">Log Out</button></a>
                 </span>
             </div>
         </nav><br>
@@ -28,12 +28,12 @@
                         <h3 class="m-1 p-5 text-light">Your Account Info</h3>
                         <div class="row">
                             <ul style="list-style-type: none;">
-                                <li class="text-light">First Name: {{account.firstName}}</li>
-                                <li class="text-light">Last Name: {{account.lastName}}</li>
-                                <li class="text-light">Username: {{account.username}}</li>
-                                <li class="text-light">Password: {{account.password}}</li>
-                                <li class="text-light">Email: {{account.email}}</li>
-                                <li class="text-light">Phone #: {{account.phoneNumber}}</li>
+                                <li class="text-light">First Name: {{user.first_name}}</li>
+                                <li class="text-light">Last Name: {{user.last_name}}</li>
+                                <li class="text-light">Username: {{user.username}}</li>
+                                <li class="text-light">Password: {{user.password}}</li>
+                                <li class="text-light">Email: {{user.email}}</li>
+                                <!-- <li class="text-light">Phone #: {{account.phoneNumber}}</li> -->
                             </ul>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
             </div>
             <div id="account-balance" class="row rounded bg-secondary row justify-content-center align-content-center m-3 p-3">
                 <div class="col-sm-5">
-                    <h3 class="m-2 p-2 text-light">Account Balance: {{account.balance}}</h3>
+                    <!-- <h3 class="m-2 p-2 text-light">Account Balance: {{account.balance}}</h3> -->
                 </div>
                 <div class="col-sm-5">
                     <a href="{% url 'parkingapp:transfer-funds'"><button type="button" class="btn btn-primary">Transfer Funds</button></a>
