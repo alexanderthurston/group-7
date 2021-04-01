@@ -21,35 +21,49 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Event(models.Model):
-    userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    # userID = models.ForeignKey(User, on_delete=models.CASCADE)
     eventName = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
-    eventDate = models.DateTimeField()
+    eventDate = models.DateField()
 
 class ParkingLot(models.Model):
-    eventID = models.ForeignKey(Event, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    nickname = models.CharField(max_length = 100)
     address = models.CharField(max_length=200)
+    numMotorcycleSpots = models.IntegerField()
+    numCarSpots = models.IntegerField()
+    numOversizeSpots = models.IntegerField()
+
+class ParkingLotEventData(models.Model):
+    parkingLot = models.ForeignKey(ParkingLot, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    distanceFromEvent = models.DecimalField(max_digits=6, decimal_places=1)
+    availableMotorcycleSpots = models.IntegerField()
+    availableCarSpots = models.IntegerField()
+    availableOversizeSpots = models.IntegerField()
 
 class ParkingSpot(models.Model):
-    parkingLotID = models.ForeignKey(ParkingLot, on_delete=models.CASCADE)
-    spaceCode = models.CharField(max_length=50)
+    parkingLotEventData = models.ForeignKey(ParkingLotEventData, on_delete=models.CASCADE)
+    # spaceCode = models.CharField(max_length=50)
+    spotType = models.CharField(max_length=1)
+    isTaken = models.BooleanField(default=False)
 
-class ParkingSpotType(models.Model):
-    parkingSpotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
-    typeName = models.CharField(max_length=20)
+# class ParkingSpotType(models.Model):
+#     parkingSpotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
+#     typeName = models.CharField(max_length=20)
 
-class ParkingSpotHistory(models.Model):
-    spotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
-    rentStartDate = models.DateTimeField()
-    rentEndDate = models.DateTimeField()
+# class ParkingSpotHistory(models.Model):
+#     spotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
+#     rentStartDate = models.DateTimeField()
+#     rentEndDate = models.DateTimeField()
 
-class TransactionHistory(models.Model):
-    userID = models.ForeignKey(User, on_delete=models.CASCADE)
-    eventID = models.ForeignKey(Event, on_delete=models.CASCADE)
-    parkingSpotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
-    transDate = models.DateTimeField()
-    amount = models.DecimalField(decimal_places=2, max_digits=5)
+# class TransactionHistory(models.Model):
+#     userID = models.ForeignKey(User, on_delete=models.CASCADE)
+#     eventID = models.ForeignKey(Event, on_delete=models.CASCADE)
+#     parkingSpotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
+#     transDate = models.DateTimeField()
+#     amount = models.DecimalField(decimal_places=2, max_digits=5)
 
-class TransactionType(models.Model):
-    transHistoryID = models.ForeignKey(TransactionHistory, on_delete=models.CASCADE)
-    transTypeName = models.CharField(max_length=20) 
+# class TransactionType(models.Model):
+#     transHistoryID = models.ForeignKey(TransactionHistory, on_delete=models.CASCADE)
+#     transTypeName = models.CharField(max_length=20) 

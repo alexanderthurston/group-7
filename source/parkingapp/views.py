@@ -63,29 +63,17 @@ def sign_out(request):
     return redirect('parkingapp:sign-in')
 
 
-# Create user account in system
-def create_account(request):
-    pass
-
-
-# Find and verify user's account in system
-def find_account(request):
-    # try:
-    #     account = User.objects.get(username=request.POST['username'], password=request.POST['password'])
-    #     return HttpResponseRedirect(reverse('parkingapp:index', args=[account.id]))
-    # except(KeyError, User.DoesNotExist):   # Redirect user and alert them of invalid sign-in
-    #     error_message = "Invalid sign-in credentials. Please Try Again"
-    #
-    #     # return HttpResponseRedirect(reverse('parkingapp:sign-in', args=[error_message]))
-
-    account = User.objects.get(username=request.POST['username'], password=request.POST['password'])
-    return HttpResponseRedirect(reverse('parkingapp:index', args=[account.id]))
-
-
 # Update account info
 @login_required(login_url='parkingapp:sign-in')
 def update_account(request):
     context = {}
+
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
     return render(request, "parkingapp/update_account.html", context)
 
 

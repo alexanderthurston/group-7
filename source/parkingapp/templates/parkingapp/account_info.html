@@ -31,16 +31,14 @@
                                 <li class="text-light">First Name: {{user.first_name}}</li>
                                 <li class="text-light">Last Name: {{user.last_name}}</li>
                                 <li class="text-light">Username: {{user.username}}</li>
-                                <li class="text-light">Password: {{user.password}}</li>
+                                <!-- <li class="text-light">Password: {{user.password}}</li> -->
                                 <li class="text-light">Email: {{user.email}}</li>
-                                <!-- <li class="text-light">Phone #: {{account.phoneNumber}}</li> -->
                             </ul>
                         </div>
                     </div>
                     <div class="col-sm-2 text-right">
                         <a href="{% url 'parkingapp:update-account' %}"><button type="button" class="btn btn-primary">Edit Info</button></a>
                     </div>
-
             </div>
             <div id="account-balance" class="row rounded bg-secondary row justify-content-center align-content-center m-3 p-3">
                 <div class="col-sm-5">
