@@ -9,17 +9,17 @@ from .forms import UserCreationFormExtended
 
 from .models import Event, ParkingLot, ParkingLotEventData, ParkingSpot
 
+from datetime import datetime
+
 
 # Homepage
 @login_required(login_url='parkingapp:sign-in')
 def index(request):
-    # account = User.objects.get(pk=account_id)
-    # account.logged_in = True
     context = {}
     return render(request, "parkingapp/index.html", context)
 
 
-# Sign-in page | will display error message upon completion of view
+# Sign-in page
 def sign_in(request):
     context = {}
     if request.user.is_authenticated:
@@ -60,6 +60,7 @@ def sign_up(request):
     return render(request, "parkingapp/sign_up.html", context)
 
 
+@login_required(login_url='parkingapp:sign-in')
 def sign_out(request):
     logout(request)
     return redirect('parkingapp:sign-in')
@@ -137,7 +138,14 @@ def list_lot(request, lot_id, event_id):
 # View to create new event. Runs within the supervisor homepage
 @login_required(login_url='parkingapp:sign-in')
 def create_event(request):
-    pass
+    event_name = request.POST['event_name']
+    event_address = request.POST['event_address']
+    event_date = datetime.strptime(request.POST['event_date'], "%Y-%m-%d").date()
+
+    event = Event(name=event_name, address=event_address, date=event_date)
+    event.save()
+
+    return HttpResponseRedirect(reverse('parkingapp:supervisor-home'))
 
 
 # Account details

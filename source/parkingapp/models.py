@@ -22,9 +22,9 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Event(models.Model):
     # userID = models.ForeignKey(User, on_delete=models.CASCADE)
-    eventName = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
-    eventDate = models.DateField()
+    date = models.DateField()
 
 class ParkingLot(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
