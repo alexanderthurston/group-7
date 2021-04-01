@@ -47,9 +47,9 @@ class ParkingLotEventData(models.Model):
 # spotType is 1 for motorcycle, 2 for car, 3 for oversize
 class ParkingSpot(models.Model):
     parkingLotEventData = models.ForeignKey(ParkingLotEventData, on_delete=models.CASCADE)
+    renter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     # spaceCode = models.CharField(max_length=50)
     spotType = models.CharField(max_length=1)
-    isTaken = models.BooleanField(default=False)
 
 # class ParkingSpotType(models.Model):
 #     parkingSpotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)

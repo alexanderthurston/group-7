@@ -91,7 +91,7 @@ def create_lot(request):
     num_oversize_spots = request.POST['num_oversize_spots']
 
     lot = ParkingLot(
-        owner=User,
+        owner=request.user,
         nickname=nickname, 
         address=address,
         numMotorcycleSpots=num_motorcycle_spots,
@@ -126,11 +126,11 @@ def list_lot(request, lot_id, event_id):
 
     # Create the parking spots for this lot and event
     for i in range(available_motorcycle_spots):
-        ParkingSpot(parkingLotEventData=lot_event_data, spotType='1', isTaken=False).save()
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='1').save()
     for i in range(available_car_spots):
-        ParkingSpot(parkingLotEventData=lot_event_data, spotType='2', isTaken=False).save()
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='2').save()
     for i in range(available_oversize_spots):
-        ParkingSpot(parkingLotEventData=lot_event_data, spotType='3', isTaken=False).save()
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='3').save()
 
     return HttpResponseRedirect(reverse('parkingapp:manage-lot'))
 
