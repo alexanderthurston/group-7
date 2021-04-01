@@ -148,6 +148,14 @@ def create_event(request):
     return HttpResponseRedirect(reverse('parkingapp:supervisor-home'))
 
 
+# Supervisor overview
+@login_required(login_url='parkingapp:sign-in')
+def supervisor_home(request):
+    event_list = Event.objects.order_by('-date')
+    context = {'event_list': event_list}
+    return render(request, "parkingapp/supervisor_home.html", context)
+
+
 # Account details
 @login_required(login_url='parkingapp:sign-in')
 def account_info(request):
@@ -192,10 +200,3 @@ def lot_attendant_confirmation(request):
 @login_required(login_url='parkingapp:sign-in')
 def manage_event(request):
     pass
-
-
-# Supervisor overview
-@login_required(login_url='parkingapp:sign-in')
-def supervisor_home(request):
-    context = {}
-    return render(request, "parkingapp/supervisor_home.html", context)

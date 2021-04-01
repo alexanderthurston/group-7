@@ -15,13 +15,44 @@
                     <a href="{% url 'parkingapp:index' %}"><button type="button" class="btn btn-light">Home</button></a>
                     <a href="{% url 'parkingapp:account-info' %}"><button type="button" class="btn btn-light">Account</button></a>
                     <a href="{% url 'parkingapp:reserve-spot' %}"><button type="button" class="btn btn-light">Find Parking</button></a>
-                    <a href="{% url 'parkingapp:list-lot' %}"><button type="button" class="btn btn-light">List Your Lot</button></a>
+                    <a href="{% url 'parkingapp:manage-lot' %}"><button type="button" class="btn btn-light">List Your Lot</button></a>
                     <a href="{% url 'parkingapp:sign-out'%}"><button type="button" class="btn btn-danger">Log Out</button></a>
                 </span>
             </div>
         </nav>
         <div class="container m-5 p-5"> <!--- view specific code here --->
-            <h4>This is where you manage your empire.</h4>
+            <h4>All Events</h4>
+            {% if event_list %}
+                {% for event in event_list %}
+                    <div>
+                        <h5>{{event.name}}</h5>
+                        <p>{{event.date}}</p>
+                        <p>{{event.address}}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                    <div>
+                        <p>No events yet!</p>
+                    </div>
+            {% endif %}
+            <h4>Add Event</h4>
+            <div class="container m-auto">
+                <div class="rounded bg-light row justify-content-center  p-3">
+                    <form class="form" action="{% url 'parkingapp:create-event' %}" method="POST">
+                        {% csrf_token %}
+
+                        <label for="event_name" class="text-primary">Event Name:</label><br>
+                        <input type="text" name="event_name" placeholder="Your event name" class="form-control"><br>
+                        <label for="event_address" class="text-primary">Event Address:</label><br>
+                        <input type="text" name="event_address" placeholder="Your event address" class="form-control"><br>
+                        <input type="date" name="event_date" placeholder="" class="form-control"><br>
+                        <div class="row justify-content-center">
+                            <input type="submit" value="Submit" class="center btn btn-primary"><br>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
         <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation">
             <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->

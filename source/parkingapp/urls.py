@@ -12,7 +12,8 @@ urlpatterns = [
     path('transfer-funds', views.transfer_funds, name="transfer-funds"),
     path('lot-attendant-home', views.lot_attendant_home, name="lot-attendant-home"),
     path('reserve-spot', views.reserve_spot, name="reserve-spot"),
-    path('list-lot', views.list_lot, name="list-lot"),
+    path('list-lot/<int:lot_id>/<int:event_id>/', views.list_lot, name="list-lot"),
     path('manage-lot', views.manage_lot, name="manage-lot"),
     path('supervisor-home', views.supervisor_home, name="supervisor-home"),
+    path('create-event', views.create_event, name="create-event"),
 ]

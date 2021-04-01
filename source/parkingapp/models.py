@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+from django.utils import timezone
  
 
 # This is how we store data that Django's default User class doesn't have built in.
@@ -24,7 +26,7 @@ class Event(models.Model):
     # userID = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
-    date = models.DateField()
+    date = models.DateField(default=timezone.now)
 
 class ParkingLot(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
