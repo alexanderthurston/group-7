@@ -98,6 +98,7 @@ def create_lot(request):
         numOversizeSpots=num_oversize_spots
     )
     lot.save()
+
     return HttpResponseRedirect(reverse('parkingapp:manage-lot'))
 
 
@@ -121,8 +122,22 @@ def list_lot(request, lot_id, event_id):
         availableOversizeSpots=available_oversize_spots
     )
     lot_event_data.save()
-    
 
+    # Create the parking spots for this lot and event
+    for i in range(available_motorcycle_spots):
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='1', isTaken=False).save()
+    for i in range(available_car_spots):
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='2', isTaken=False).save()
+    for i in range(available_oversize_spots):
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='3', isTaken=False).save()
+
+    return HttpResponseRedirect(reverse('parkingapp:manage-lot'))
+
+
+# View to create new event. Runs within the supervisor homepage
+@login_required(login_url='parkingapp:sign-in')
+def create_event(request):
+    pass
 
 
 # Account details
@@ -162,12 +177,6 @@ def lot_attendant_home(request):
 # Verification confirmation
 @login_required(login_url='parkingapp:sign-in')
 def lot_attendant_confirmation(request):
-    pass
-
-
-# Supervisor view to create event
-@login_required(login_url='parkingapp:sign-in')
-def create_event(request):
     pass
 
 

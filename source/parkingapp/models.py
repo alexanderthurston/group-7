@@ -42,6 +42,7 @@ class ParkingLotEventData(models.Model):
     availableCarSpots = models.IntegerField()
     availableOversizeSpots = models.IntegerField()
 
+# spotType is 1 for motorcycle, 2 for car, 3 for oversize
 class ParkingSpot(models.Model):
     parkingLotEventData = models.ForeignKey(ParkingLotEventData, on_delete=models.CASCADE)
     # spaceCode = models.CharField(max_length=50)
