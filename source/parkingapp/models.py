@@ -30,9 +30,9 @@ class ParkingLot(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     nickname = models.CharField(max_length = 100)
     address = models.CharField(max_length=200)
-    numMotorcycleSpots = models.IntegerField()
-    numCarSpots = models.IntegerField()
-    numOversizeSpots = models.IntegerField()
+    numMotorcycleSpots = models.IntegerField(default=0)
+    numCarSpots = models.IntegerField(default=0)
+    numOversizeSpots = models.IntegerField(default=0)
 
 class ParkingLotEventData(models.Model):
     parkingLot = models.ForeignKey(ParkingLot, on_delete=models.CASCADE)

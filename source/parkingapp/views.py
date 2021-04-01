@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from django.utils import timezone
 from django.urls import reverse
-# from .models import User, UserType
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .forms import UserCreationFormExtended
+
+from .models import Event, ParkingLot, ParkingLotEventData, ParkingSpot
+
 
 # Homepage
 @login_required(login_url='parkingapp:sign-in')
@@ -77,6 +79,52 @@ def update_account(request):
     return render(request, "parkingapp/update_account.html", context)
 
 
+# Creates a new parking lot, which can then be listed for events.
+# Gets called by a form on the manage_lot page
+@login_required(login_url='parkingapp:sign-in')
+def create_lot(request):
+    nickname = request.POST['lot_nickname']
+    address = request.POST['lot_address']
+    num_motorcycle_spots = request.POST['num_motorcycle_spots']
+    num_car_spots = request.POST['num_car_spots']
+    num_oversize_spots = request.POST['num_oversize_spots']
+
+    lot = ParkingLot(
+        owner=User,
+        nickname=nickname, 
+        address=address,
+        numMotorcycleSpots=num_motorcycle_spots,
+        numCarSpots=num_car_spots,
+        numOversizeSpots=num_oversize_spots
+    )
+    lot.save()
+    return HttpResponseRedirect(reverse('parkingapp:manage-lot'))
+
+
+# List an existing lot for an event
+# This gets called by a form on the manage_lot page
+@login_required(login_url='parkingapp:sign-in')
+def list_lot(request, lot_id, event_id):
+    lot = get_object_or_404(ParkingLot, pk=lot_id)
+    event = get_object_or_404(Event, pk=event_id)
+    distance_from_event = request.POST['distance_from_event']
+    available_motorcycle_spots = lot.numMotorcycleSpots
+    available_car_spots = lot.numCarSpots
+    available_oversize_spots = lot.numOversizeSpots
+
+    lot_event_data = ParkingLotEventData(
+        parkingLot=lot,
+        event=event,
+        distanceFromEvent=distance_from_event,
+        availableMotorcycleSpots=available_motorcycle_spots,
+        availableCarSpots=available_car_spots,
+        availableOversizeSpots=available_oversize_spots
+    )
+    lot_event_data.save()
+    
+
+
+
 # Account details
 @login_required(login_url='parkingapp:sign-in')
 def account_info(request):
@@ -95,13 +143,6 @@ def transfer_funds(request):
 def reserve_spot(request,):
     context = {}
     return render(request, "parkingapp/reserve_spot.html", context)
-
-
-# List lot and spots
-@login_required(login_url='parkingapp:sign-in')
-def list_lot(request):
-    context = {}
-    return render(request, "parkingapp/list_lot.html", context)
 
 
 # Manage lot
