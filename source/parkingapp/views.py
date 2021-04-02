@@ -162,6 +162,10 @@ def account_info(request):
     context = {}
     return render(request, "parkingapp/account_info.html", context)
 
+@login_required(login_url='parkingapp:sign-in')
+def events(request):
+    context={}
+    return render(request, "parkingapp/events.html", context)
 
 @login_required(login_url='parkingapp:sign-in')
 def transfer_funds(request):
