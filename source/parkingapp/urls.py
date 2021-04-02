@@ -16,4 +16,5 @@ urlpatterns = [
     path('manage-lot', views.manage_lot, name="manage-lot"),
     path('supervisor-home', views.supervisor_home, name="supervisor-home"),
     path('create-event', views.create_event, name="create-event"),
+    path('create-lot', views.create_lot, name="create-lot"),
 ]

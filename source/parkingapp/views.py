@@ -94,9 +94,9 @@ def update_account(request):
 def create_lot(request):
     nickname = request.POST['lot_nickname']
     address = request.POST['lot_address']
-    num_motorcycle_spots = request.POST['num_motorcycle_spots']
-    num_car_spots = request.POST['num_car_spots']
-    num_oversize_spots = request.POST['num_oversize_spots']
+    num_motorcycle_spots = request.POST['num-motorcycle-spots']
+    num_car_spots = request.POST['num-car-spots']
+    num_oversize_spots = request.POST['num-oversize-spots']
 
     lot = ParkingLot(
         owner=request.user,
@@ -164,6 +164,14 @@ def supervisor_home(request):
     return render(request, "parkingapp/supervisor_home.html", context)
 
 
+# Manage lot
+@login_required(login_url='parkingapp:sign-in')
+def manage_lot(request):
+    lot_list = request.user.parkinglot_set.all()
+    context = {'lot_list': lot_list}
+    return render(request, "parkingapp/manage_lot.html", context)
+
+
 # Account details
 @login_required(login_url='parkingapp:sign-in')
 def account_info(request):
@@ -186,13 +194,6 @@ def transfer_funds(request):
 def reserve_spot(request):
     context = {}
     return render(request, "parkingapp/reserve_spot.html", context)
-
-
-# Manage lot
-@login_required(login_url='parkingapp:sign-in')
-def manage_lot(request):
-    context = {}
-    return render(request, "parkingapp/manage_lot.html", context)
 
 
 # Verification portal
