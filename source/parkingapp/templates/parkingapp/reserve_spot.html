@@ -28,8 +28,8 @@
                 <form method="post">
                     <label for="event" class="text-primary">Choose Event:</label>
                     <select id="event" name="event" class="form-control">
-                        {% for event in events %}
-                        <option type="text" id="{{event.id}}" ></option>
+                        {% for event in event_list %}
+                        <option type="text" id="{{event.id}}">{{event.name}} - {{event.date}}</option>
                         {% endfor %}
                     </select><br>
                     <label for="spot-type" class="text-primary">Choose Spot Type:</label>

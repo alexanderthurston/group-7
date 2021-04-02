@@ -172,6 +172,14 @@ def manage_lot(request):
     return render(request, "parkingapp/manage_lot.html", context)
 
 
+# Reserve parking spot
+@login_required(login_url='parkingapp:sign-in')
+def reserve_spot(request):
+    event_list = Event.objects.order_by('-date')
+    context = {'event_list': event_list}
+    return render(request, "parkingapp/reserve_spot.html", context)
+
+
 # Account details
 @login_required(login_url='parkingapp:sign-in')
 def account_info(request):
@@ -187,13 +195,6 @@ def events(request):
 def transfer_funds(request):
     context = {}
     return render(request, "parkingapp/transfer_funds.html", context)
-
-
-# Reserve parking spot
-@login_required(login_url='parkingapp:sign-in')
-def reserve_spot(request):
-    context = {}
-    return render(request, "parkingapp/reserve_spot.html", context)
 
 
 # Verification portal
