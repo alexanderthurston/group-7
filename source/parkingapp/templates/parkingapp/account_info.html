@@ -23,30 +23,33 @@
         </nav><br>
 
         <div class="m-5 p-5"> <!--- view specific code here --->
-            <div id="account-info" class="row rounded bg-secondary row justify-content-left m-3 p-3">
-
-                    <div class="col-sm-10">
-                        <h3 class="m-1 p-5 text-light">Your Account Info</h3>
-                        <div class="row">
-                            <ul style="list-style-type: none;">
-                                <li class="text-light">First Name: {{user.first_name}}</li>
-                                <li class="text-light">Last Name: {{user.last_name}}</li>
-                                <li class="text-light">Username: {{user.username}}</li>
-                                <!-- <li class="text-light">Password: {{user.password}}</li> -->
-                                <li class="text-light">Email: {{user.email}}</li>
-                            </ul>
-                        </div>
+            <div class="container rounded bg-light">
+                <div id="account-info" class="row justify-content-left m-3 p-3">
+                    <div class="col-med-10">
+                        <h3 class="text-primary">Your Account Info:</h3>
                     </div>
-                    <div class="col-sm-2 text-right">
+                    <div class="col-sm-5 container text-right">
                         <a href="{% url 'parkingapp:update-account' %}"><button type="button" class="btn btn-primary">Edit Info</button></a>
                     </div>
-            </div>
-            <div id="account-balance" class="row rounded bg-secondary row justify-content-center align-content-center m-3 p-3">
-                <div class="col-sm-5">
-                    <!-- <h3 class="m-2 p-2 text-light">Account Balance: {{account.balance}}</h3> -->
                 </div>
-                <div class="col-sm-5">
-                    <a href="{% url 'parkingapp:transfer-funds'"><button type="button" class="btn btn-primary">Transfer Funds</button></a>
+                <div class="row m-1 p-1">
+                    <ul style="list-style-type: none;">
+                        <li class="text-primary">First Name: {{user.first_name}}</li>
+                        <li class="text-primary">Last Name: {{user.last_name}}</li>
+                        <li class="text-primary">Username: {{user.username}}</li>
+                        <!-- <li class="text-primary">Password: {{user.password}}</li> -->
+                        <li class="text-primary">Email: {{user.email}}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container rounded bg-light">
+                <div id="account-balance" class="row justify-content-left m-3 p-3">
+                    <div class="col-med-10">
+                         <h3 class="text-primary">Account Balance:</h3>
+                    </div>
+                    <div class="col-sm-5 container text-right">
+                        <a href="{% url 'parkingapp:transfer-funds' %}"><button type="button" class="btn btn-primary">Transfer Funds</button></a>
+                    </div>
                 </div>
             </div>
         </div>

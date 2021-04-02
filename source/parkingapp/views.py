@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import UserChangeForm
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from django.utils import timezone
 from django.urls import reverse
@@ -71,12 +72,19 @@ def sign_out(request):
 def update_account(request):
     context = {}
 
+    form = UserChangeForm()
+
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        form = UserChangeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('parkingapp:account-info')
+            # first_name = request.POST.get('first_name')
+            # last_name = request.POST.get('last_name')
+            # username = request.POST.get('username')
+            # email = request.POST.get('email')
+            # password = request.POST.get('password')
+    context = {'form': form}
     return render(request, "parkingapp/update_account.html", context)
 
 
@@ -175,7 +183,7 @@ def transfer_funds(request):
 
 # Reserve parking spot
 @login_required(login_url='parkingapp:sign-in')
-def reserve_spot(request,):
+def reserve_spot(request):
     context = {}
     return render(request, "parkingapp/reserve_spot.html", context)
 

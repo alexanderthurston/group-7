@@ -7,27 +7,64 @@
 </head>
 <body>
     <div>
-        <nav class="navbar fixed-top navbar-dark bg-dark" role="navigation">
+        <nav class="navbar fixed-top navbar-dark bg-primary" role="navigation">
             <h1 class="navbar-brand">BigBlueParkingGenie</h1>
             <div>
                 <span> <!--- Directory --->
-                    <a href="{% url 'parkingapp:index' %}"><button type="button" class="btn btn-primary">Home</button></a>
-                    <a href="{% url 'parkingapp:account-info' %}"><button type="button" class="btn btn-primary">Account</button></a>
+                    <a href="{% url 'parkingapp:index' %}"><button type="button" class="btn btn-light">Home</button></a>
+                    <a href="{% url 'parkingapp:account-info' %}"><button type="button" class="btn btn-light">Account</button></a>
                     <a href="{% url 'parkingapp:events' %}"><button type="button" class="btn btn-light">Events</button></a>
-                    <a href="{% url 'parkingapp:reserve-spot' %}"><button type="button" class="btn btn-primary">Find Parking</button></a>
-                    <a href="{% url 'parkingapp:manage-lot' %}"><button type="button" class="btn btn-primary">List Your Lot</button></a>
+                    <a href="{% url 'parkingapp:reserve-spot' %}"><button type="button" class="btn btn-light">Find Parking</button></a>
+                    <a href="{% url 'parkingapp:manage-lot' %}"><button type="button" class="btn btn-light">List Your Lot</button></a>
                     <a href="{% url 'parkingapp:sign-out'%}"><button type="button" class="btn btn-danger">Log Out</button></a>
                 </span>
             </div>
         </nav>
-        <div> <!--- view specific code here --->
 
+        <div class="container m-5 p-5"> <!--- view specific code here --->
+            <div class="container m-auto">
+            <h4 class="m-2 p-2 text-primary">List Lot</h4>
+                <div class="rounded bg-light row justify-content-center p-3">
+                    <form method="post">
+                        <label for="address" class="text-primary">Lot Address:</label>
+                        <input type="text" id="address" class="form-control"><br>
+
+                        <label for="spot-amount" class="text-primary">Number of Parking Spots:</label>
+                        <input type="text" id="spot-amount" class="form-control"><br>
+
+                        <div class="row justify-content-center">
+                            <input type="submit" value="Submit" class="center btn btn-primary"><br>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="container m-auto">
+                <h4 class="m-2 p-2 text-primary">Manage Lots:</h4>
+                <div class="rounded bg-light row justify-content-center p-3">
+                    {% if event_list %}
+                        {% for event in lot_list %}
+                            <div class="rounded bg-light row justify-content-center p-3">
+                                <h5 class="pr-3">{{lot.name}}</h5><br>
+                                <p class="pr-3">{{lot.address}}</p>
+
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                            <div class="container rounded bg-light row justify-content-center p-3 m-3 ">
+                                <p class="text-danger font-weight-bold">No Lots Yet!</p>
+                            </div>
+                    {% endif %}
+                </div>
+
+            </div>
         </div>
-        <nav class="navbar fixed-bottom navbar-dark bg-dark" role="navigation">
+        <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation">
             <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->
                 <span>
-                    <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-primary btn-lg">Lot Assistant Home</button></a>
-                    <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-primary btn-lg">Supervisor Home</button></a>
+                    <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light btn-lg">Lot Assistant Home</button></a>
+                    <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light btn-lg">Supervisor Home</button></a>
                 </span>
             </div>
         </nav>
