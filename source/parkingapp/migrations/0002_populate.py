@@ -5,9 +5,10 @@ from django.utils import timezone
 
 def populate_db(apps, schema_editor):
 
-    User = apps.get_model('parkingapp', 'User')
+    User = django.auth.models.User
 
     user = User(username="SystemTest", password="systest", firstName="System", lastName="Test", phoneNumber="0000000000")
+
     user.save()
 
 class Migration(migrations.Migration):
