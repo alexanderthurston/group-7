@@ -94,9 +94,12 @@ def update_account(request):
 def create_lot(request):
     nickname = request.POST['lot_nickname']
     address = request.POST['lot_address']
-    num_motorcycle_spots = request.POST['num_motorcycle_spots']
-    num_car_spots = request.POST['num_car_spots']
-    num_oversize_spots = request.POST['num_oversize_spots']
+    num_motorcycle_spots = request.POST['num-motorcycle-spots']
+    num_car_spots = request.POST['num-car-spots']
+    num_oversize_spots = request.POST['num-oversize-spots']
+    motorcycle_spot_price = request.POST['motorcycle-spot-price']
+    car_spot_price = request.POST['car-spot-price']
+    oversize_spot_price = request.POST['oversize-spot-price']
 
     lot = ParkingLot(
         owner=request.user,
@@ -104,7 +107,10 @@ def create_lot(request):
         address=address,
         numMotorcycleSpots=num_motorcycle_spots,
         numCarSpots=num_car_spots,
-        numOversizeSpots=num_oversize_spots
+        numOversizeSpots=num_oversize_spots,
+        motorcycleSpotPrice=motorcycle_spot_price,
+        carSpotPrice=car_spot_price,
+        oversizeSpotPrice=oversize_spot_price
     )
     lot.save()
 
@@ -114,10 +120,11 @@ def create_lot(request):
 # List an existing lot for an event
 # This gets called by a form on the manage_lot page
 @login_required(login_url='parkingapp:sign-in')
-def list_lot(request, lot_id, event_id):
+def list_lot(request, lot_id):
     lot = get_object_or_404(ParkingLot, pk=lot_id)
+    event_id = request.POST['selected-event']
+    distance_from_event = request.POST['distance-from-event']
     event = get_object_or_404(Event, pk=event_id)
-    distance_from_event = request.POST['distance_from_event']
     available_motorcycle_spots = lot.numMotorcycleSpots
     available_car_spots = lot.numCarSpots
     available_oversize_spots = lot.numOversizeSpots
@@ -164,6 +171,73 @@ def supervisor_home(request):
     return render(request, "parkingapp/supervisor_home.html", context)
 
 
+# Manage lot
+@login_required(login_url='parkingapp:sign-in')
+def manage_lot(request):
+    lot_list = request.user.parkinglot_set.all()
+    event_list = Event.objects.order_by('-date')
+    context = {'lot_list': lot_list, 'event_list': event_list}
+    return render(request, "parkingapp/manage_lot.html", context)
+
+
+# Reserve parking spot
+@login_required(login_url='parkingapp:sign-in')
+def reserve_spot(request):
+    event_list = Event.objects.order_by('-date')
+    parking_list = []
+    spot_type = None
+    selected_event_id = None
+
+
+    if request.method == 'POST':
+        selected_event_id = request.POST['selected-event']
+        spot_type = request.POST['spot-type']
+
+        event = Event.objects.get(id=selected_event_id)
+        if spot_type == "1":
+            parking_list = event.parkingloteventdata_set.filter(
+                availableMotorcycleSpots__gte=1
+            ).order_by(
+                '-distanceFromEvent'
+            )
+        elif spot_type == "2":
+            parking_list = event.parkingloteventdata_set.filter(
+                availableCarSpots__gte=1
+            ).order_by(
+                '-distanceFromEvent'
+            )
+        elif spot_type == "3":
+            parking_list = event.parkingloteventdata_set.filter(
+                availableOversizeSpots__gte=1
+            ).order_by(
+                '-distanceFromEvent'
+            )
+
+    context = {
+        'event_list': event_list,
+        'parking_list': parking_list,
+        'spot_type': spot_type,
+        'selected_event_id': selected_event_id
+    }
+    return render(request, "parkingapp/reserve_spot.html", context)
+
+
+@login_required(login_url='parkingapp:sign-in')
+def make_reservation(request, lot_data_id, selected_event_id, spot_type):
+    lot_data = ParkingLotEventData.get(id=lot_data_id)
+    parking_spots = lot_data.ParkingSpot_set.objects.filter(
+            spotType=spot_type
+        ).filter(
+            renter=None
+        )
+    parking_spot = parking_spots[0]
+    parking_spot.update(renter=request.user)
+    parking_spot.save()
+    
+
+    return HttpResponseRedirect(reverse('parkingapp:index'))
+
+
 # Account details
 @login_required(login_url='parkingapp:sign-in')
 def account_info(request):
@@ -179,20 +253,6 @@ def events(request):
 def transfer_funds(request):
     context = {}
     return render(request, "parkingapp/transfer_funds.html", context)
-
-
-# Reserve parking spot
-@login_required(login_url='parkingapp:sign-in')
-def reserve_spot(request):
-    context = {}
-    return render(request, "parkingapp/reserve_spot.html", context)
-
-
-# Manage lot
-@login_required(login_url='parkingapp:sign-in')
-def manage_lot(request):
-    context = {}
-    return render(request, "parkingapp/manage_lot.html", context)
 
 
 # Verification portal

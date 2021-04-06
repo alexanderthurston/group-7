@@ -16,4 +16,7 @@ urlpatterns = [
     path('manage-lot', views.manage_lot, name="manage-lot"),
     path('supervisor-home', views.supervisor_home, name="supervisor-home"),
     path('create-event', views.create_event, name="create-event"),
+    path('create-lot', views.create_lot, name="create-lot"),
+    path('list-lot/<int:lot_id>/', views.list_lot, name="list-lot"),
+    path('make-reservation/<int:lot_data_id>/<int:selected_event_id>/<str:spot_type>/', views.make_reservation, name="make-reservation"),
 ]

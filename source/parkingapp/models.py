@@ -11,6 +11,7 @@ from django.utils import timezone
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
+    isSupervisor = models.BooleanField(default=False)
 
 
 @receiver(post_save, sender=User)
@@ -38,6 +39,9 @@ class ParkingLot(models.Model):
     numMotorcycleSpots = models.IntegerField(default=0)
     numCarSpots = models.IntegerField(default=0)
     numOversizeSpots = models.IntegerField(default=0)
+    motorcycleSpotPrice = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
+    carSpotPrice = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
+    oversizeSpotPrice = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
 
 
 class ParkingLotEventData(models.Model):
