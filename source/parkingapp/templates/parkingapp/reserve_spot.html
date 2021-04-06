@@ -30,14 +30,14 @@
                     <label for="event" class="text-primary">Choose Event:</label>
                     <select id="event" name="selected-event" class="form-control">
                         {% for event in event_list %}
-                        <option type="text" value="{{event.id}}">{{event.name}} - {{event.date}}</option>
+                        <option type="text" value={{event.id}} {% if selected_event_id == event.id %}selected{% endif %}>{{event.name}} - {{event.date}}</option>
                         {% endfor %}
                     </select><br>
                     <label for="spot-type" class="text-primary">Choose Spot Type:</label>
                     <select id="spot-type" name="spot-type" class="form-control">
-                        <option value="1">Motorcycle</option>
-                        <option value="2">Car</option>
-                        <option value="3">Bus or RV</option>
+                        <option value="1" {% if spot_type == "1" %}selected{% endif %}>Motorcycle</option>
+                        <option value="2" {% if spot_type == "2" %}selected{% endif %}>Car</option>
+                        <option value="3" {% if spot_type == "3" %}selected{% endif %}>Bus or RV</option>
                     </select><br>
                     <div class="row justify-content-center">
                         <input type="submit" value="Submit" class="center btn btn-primary"><br>
@@ -48,7 +48,19 @@
             <h4 class="m-2 p-2 text-primary">Available Spots</h4>
             <div class="rounded bg-light row justify-content-center p-3">
                 {% for lot in parking_list %}
-                <p>{{lot.distanceFromEvent}}</p>
+                <p>Distance from event: {{lot.distanceFromEvent}}</p>
+
+                {% if spot_type == "1" %}
+                <p>Cost: ${{lot.parkingLot.motorcycleSpotPrice}}</p>
+                {% elif spot_type == "2" %}
+                <p>Cost: ${{lot.parkingLot.carSpotPrice}}</p>
+                {% else %}
+                <p>Cost: ${{lot.parkingLot.oversizeSpotPrice}}</p>
+                {% endif %}
+                <form action="{% url 'parkingapp:make-reservation' lot.id selected_event_id spot_type %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Rent" class="center btn btn-primary"><br>
+                </form>
                 {% endfor %}
             </div>
             {% endif %}

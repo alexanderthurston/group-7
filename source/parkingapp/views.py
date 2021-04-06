@@ -97,6 +97,9 @@ def create_lot(request):
     num_motorcycle_spots = request.POST['num-motorcycle-spots']
     num_car_spots = request.POST['num-car-spots']
     num_oversize_spots = request.POST['num-oversize-spots']
+    motorcycle_spot_price = request.POST['motorcycle-spot-price']
+    car_spot_price = request.POST['car-spot-price']
+    oversize_spot_price = request.POST['oversize-spot-price']
 
     lot = ParkingLot(
         owner=request.user,
@@ -104,7 +107,10 @@ def create_lot(request):
         address=address,
         numMotorcycleSpots=num_motorcycle_spots,
         numCarSpots=num_car_spots,
-        numOversizeSpots=num_oversize_spots
+        numOversizeSpots=num_oversize_spots,
+        motorcycleSpotPrice=motorcycle_spot_price,
+        carSpotPrice=car_spot_price,
+        oversizeSpotPrice=oversize_spot_price
     )
     lot.save()
 
@@ -179,12 +185,15 @@ def manage_lot(request):
 def reserve_spot(request):
     event_list = Event.objects.order_by('-date')
     parking_list = []
+    spot_type = None
+    selected_event_id = None
+
 
     if request.method == 'POST':
-        event_id = request.POST['selected-event']
+        selected_event_id = request.POST['selected-event']
         spot_type = request.POST['spot-type']
 
-        event = Event.objects.get(id=event_id)
+        event = Event.objects.get(id=selected_event_id)
         if spot_type == "1":
             parking_list = event.parkingloteventdata_set.filter(
                 availableMotorcycleSpots__gte=1
@@ -204,8 +213,29 @@ def reserve_spot(request):
                 '-distanceFromEvent'
             )
 
-    context = {'event_list': event_list, 'parking_list': parking_list}
+    context = {
+        'event_list': event_list,
+        'parking_list': parking_list,
+        'spot_type': spot_type,
+        'selected_event_id': selected_event_id
+    }
     return render(request, "parkingapp/reserve_spot.html", context)
+
+
+@login_required(login_url='parkingapp:sign-in')
+def make_reservation(request, lot_data_id, selected_event_id, spot_type):
+    lot_data = ParkingLotEventData.get(id=lot_data_id)
+    parking_spots = lot_data.ParkingSpot_set.objects.filter(
+            spotType=spot_type
+        ).filter(
+            renter=None
+        )
+    parking_spot = parking_spots[0]
+    parking_spot.update(renter=request.user)
+    parking_spot.save()
+    
+
+    return HttpResponseRedirect(reverse('parkingapp:index'))
 
 
 # Account details
