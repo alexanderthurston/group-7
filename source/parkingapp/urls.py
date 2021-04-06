@@ -17,5 +17,5 @@ urlpatterns = [
     path('supervisor-home', views.supervisor_home, name="supervisor-home"),
     path('create-event', views.create_event, name="create-event"),
     path('create-lot', views.create_lot, name="create-lot"),
-    path('list-lot/<int:lot_id>/<int:event_id>/', views.list_lot, name="list-lot"),
+    path('list-lot/<int:lot_id>/', views.list_lot, name="list-lot"),
 ]

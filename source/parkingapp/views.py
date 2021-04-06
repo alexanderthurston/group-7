@@ -114,10 +114,11 @@ def create_lot(request):
 # List an existing lot for an event
 # This gets called by a form on the manage_lot page
 @login_required(login_url='parkingapp:sign-in')
-def list_lot(request, lot_id, event_id):
+def list_lot(request, lot_id):
     lot = get_object_or_404(ParkingLot, pk=lot_id)
+    event_id = request.POST['selected-event']
+    distance_from_event = request.POST['distance-from-event']
     event = get_object_or_404(Event, pk=event_id)
-    distance_from_event = request.POST['distance_from_event']
     available_motorcycle_spots = lot.numMotorcycleSpots
     available_car_spots = lot.numCarSpots
     available_oversize_spots = lot.numOversizeSpots
@@ -168,7 +169,8 @@ def supervisor_home(request):
 @login_required(login_url='parkingapp:sign-in')
 def manage_lot(request):
     lot_list = request.user.parkinglot_set.all()
-    context = {'lot_list': lot_list}
+    event_list = Event.objects.order_by('-date')
+    context = {'lot_list': lot_list, 'event_list': event_list}
     return render(request, "parkingapp/manage_lot.html", context)
 
 
@@ -176,7 +178,33 @@ def manage_lot(request):
 @login_required(login_url='parkingapp:sign-in')
 def reserve_spot(request):
     event_list = Event.objects.order_by('-date')
-    context = {'event_list': event_list}
+    parking_list = []
+
+    if request.method == 'POST':
+        event_id = request.POST['selected-event']
+        spot_type = request.POST['spot-type']
+
+        event = Event.objects.get(id=event_id)
+        if spot_type == "1":
+            parking_list = event.parkingloteventdata_set.filter(
+                availableMotorcycleSpots__gte=1
+            ).order_by(
+                '-distanceFromEvent'
+            )
+        elif spot_type == "2":
+            parking_list = event.parkingloteventdata_set.filter(
+                availableCarSpots__gte=1
+            ).order_by(
+                '-distanceFromEvent'
+            )
+        elif spot_type == "3":
+            parking_list = event.parkingloteventdata_set.filter(
+                availableOversizeSpots__gte=1
+            ).order_by(
+                '-distanceFromEvent'
+            )
+
+    context = {'event_list': event_list, 'parking_list': parking_list}
     return render(request, "parkingapp/reserve_spot.html", context)
 
 

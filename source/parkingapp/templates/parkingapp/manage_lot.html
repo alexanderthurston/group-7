@@ -23,7 +23,7 @@
 
         <div class="container m-5 p-5"> <!--- view specific code here --->
             <div class="container m-auto">
-            <h4 class="m-2 p-2 text-primary">List Lot</h4>
+            <h4 class="m-2 p-2 text-primary">Create New Lot</h4>
                 <div class="rounded bg-light row justify-content-center p-3">
                     <form action="{% url 'parkingapp:create-lot' %}" method="post">
                         {% csrf_token %}
@@ -47,18 +47,32 @@
                         </div>
                     </form>
                 </div>
-
             </div>
 
             <div class="container m-auto">
-                <h4 class="m-2 p-2 text-primary">Manage Lots:</h4>
+                <h4 class="m-2 p-2 text-primary">List Your Lots</h4>
                 <div class="rounded bg-light row justify-content-center p-3">
                     {% if lot_list %}
                         {% for lot in lot_list %}
                             <div class="rounded bg-light row justify-content-center p-3">
                                 <h5 class="pr-3">{{lot.nickname}}</h5><br>
                                 <p class="pr-3">{{lot.address}}</p>
-
+                                {% if event_list %}
+                                <form action="{% url 'parkingapp:list-lot' lot.id %}" method="post">
+                                    {% csrf_token %}
+                                    <label for="event" class="text-primary">Choose Event:</label>
+                                    <select id="event" name="selected-event" class="form-control">
+                                        {% for event in event_list %}
+                                        <option type="text" value="{{event.id}}">{{event.name}} - {{event.date}}</option>
+                                        {% endfor %}
+                                    </select><br>
+                                    <label for="distance-from-event" class="text-primary">Distance from Event:</label>
+                                    <input type="number" id="distance-from-event" name="distance-from-event" class="form-control"><br>
+                                    <div class="row justify-content-center">
+                                        <input type="submit" value="List" class="center btn btn-primary"><br>
+                                    </div>
+                                </form>
+                                {% endif %}
                             </div>
                         {% endfor %}
                     {% else %}
