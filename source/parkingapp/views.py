@@ -1,136 +1,275 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from django.contrib.auth.forms import UserChangeForm
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from django.utils import timezone
 from django.urls import reverse
-from .models import User
-
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
-from .forms import ExtendedUserCreationForm, UserProfileForm
+
+from .forms import UserCreationFormExtended
+
+from .models import Event, ParkingLot, ParkingLotEventData, ParkingSpot
+
+from datetime import datetime
 
 
 # Homepage
-def index(request, account_id):
-    account = User.objects.get(pk=account_id)
-    account.logged_in = True
-    context = {"account": account, }
+@login_required(login_url='parkingapp:sign-in')
+def index(request):
+    context = {}
     return render(request, "parkingapp/index.html", context)
 
 
-# Sign-in page | will display error message upon completion of view
-def sign_in(request, error_message=""):
-    context = {'error_message': error_message}
+# Sign-in page
+def sign_in(request):
+    context = {}
+    if request.user.is_authenticated:
+        return redirect('parkingapp:index')
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('parkingapp:index')
+        else:
+            messages.info(request, 'Username or password is incorrect')
+            return render(request, "parkingapp/sign_in.html", context)
+
     return render(request, "parkingapp/sign_in.html", context)
 
 
 # First time sign-up
 # @login_required
 def sign_up(request):
+    if request.user.is_authenticated:
+        return redirect('parkingapp:index')
+
+    form = UserCreationFormExtended()
+
     if request.method == 'POST':
-        form = ExtendedUserCreationForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+        form = UserCreationFormExtended(request.POST)
+        if form.is_valid():
+            form.save()
+            # user = form.cleaned_data.get('username')
+            # messages.success(request, 'Account was created for ' + user)
+            return redirect('parkingapp:sign-in')
 
-        if form.is_valid() and profile_form.is_valid():
-            user = form.save()
-
-            profile = profile_form.save(commit=False) #creates profile object, but doesn't save it yet
-            profile.user = user
-
-            profile.save()
-
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
-            user = authenticate(username=username, password=password)
-            login(request, user)
-
-            return HttpResponseRedirect('index')
-
-    else:
-        form = ExtendedUserCreationForm()
-        profile_form = UserProfileForm()
-
-    context = {'form' : form, 'profile_form' : profile_form}
-    return render(request, "parkingapp/sign_up.html",context)
+    context = {'form': form}
+    return render(request, "parkingapp/sign_up.html", context)
 
 
-# Create user account in system
-def create_account(request):
-    pass
-
-
-# Find and verify user's account in system
-def find_account(request):
-    # try:
-    #     account = User.objects.get(username=request.POST['username'], password=request.POST['password'])
-    #     return HttpResponseRedirect(reverse('parkingapp:index', args=[account.id]))
-    # except(KeyError, User.DoesNotExist):   # Redirect user and alert them of invalid sign-in
-    #     error_message = "Invalid sign-in credentials. Please Try Again"
-    #
-    #     # return HttpResponseRedirect(reverse('parkingapp:sign-in', args=[error_message]))
-
-    account = User.objects.get(username=request.POST['username'], password=request.POST['password'])
-    return HttpResponseRedirect(reverse('parkingapp:index', args=[account.id]))
+@login_required(login_url='parkingapp:sign-in')
+def sign_out(request):
+    logout(request)
+    return redirect('parkingapp:sign-in')
 
 
 # Update account info
-def update_account(request, account_id):
-    account = User.objects.get(pk=account_id)
-    context = {'account': account, }
+@login_required(login_url='parkingapp:sign-in')
+def update_account(request):
+    context = {}
+
+    form = UserChangeForm()
+
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('parkingapp:account-info')
+            # first_name = request.POST.get('first_name')
+            # last_name = request.POST.get('last_name')
+            # username = request.POST.get('username')
+            # email = request.POST.get('email')
+            # password = request.POST.get('password')
+    context = {'form': form}
     return render(request, "parkingapp/update_account.html", context)
 
 
-# Account details
-def account_info(request, account_id):
-    account = User.objects.get(pk=account_id)
-    context = {'account': account, }
-    return render(request, "parkingapp/account_info.html", context)
+# Creates a new parking lot, which can then be listed for events.
+# Gets called by a form on the manage_lot page
+@login_required(login_url='parkingapp:sign-in')
+def create_lot(request):
+    nickname = request.POST['lot_nickname']
+    address = request.POST['lot_address']
+    num_motorcycle_spots = request.POST['num-motorcycle-spots']
+    num_car_spots = request.POST['num-car-spots']
+    num_oversize_spots = request.POST['num-oversize-spots']
+    motorcycle_spot_price = request.POST['motorcycle-spot-price']
+    car_spot_price = request.POST['car-spot-price']
+    oversize_spot_price = request.POST['oversize-spot-price']
 
-def transfer_funds(request, account_id):
-    account = User.objects.get(pk=account_id)
-    context = {'account': account, }
-    return render(request, "parkingapp/transfer_funds.html", context)
-# Reserve parking spot
-def reserve_spot(request, account_id):
-    account = User.objects.get(pk=account_id)
-    context = {'account': account, }
-    return render(request, "parkingapp/reserve_spot.html", context)
+    lot = ParkingLot(
+        owner=request.user,
+        nickname=nickname, 
+        address=address,
+        numMotorcycleSpots=num_motorcycle_spots,
+        numCarSpots=num_car_spots,
+        numOversizeSpots=num_oversize_spots,
+        motorcycleSpotPrice=motorcycle_spot_price,
+        carSpotPrice=car_spot_price,
+        oversizeSpotPrice=oversize_spot_price
+    )
+    lot.save()
+
+    return HttpResponseRedirect(reverse('parkingapp:manage-lot'))
 
 
-# List lot and spots
-def list_lot(request, account_id):
-    account = User.objects.get(pk=account_id)
-    context = {'account': account, }
-    return render(request, "parkingapp/list_lot.html", context)
+# List an existing lot for an event
+# This gets called by a form on the manage_lot page
+@login_required(login_url='parkingapp:sign-in')
+def list_lot(request, lot_id):
+    lot = get_object_or_404(ParkingLot, pk=lot_id)
+    event_id = request.POST['selected-event']
+    distance_from_event = request.POST['distance-from-event']
+    event = get_object_or_404(Event, pk=event_id)
+    available_motorcycle_spots = lot.numMotorcycleSpots
+    available_car_spots = lot.numCarSpots
+    available_oversize_spots = lot.numOversizeSpots
+
+    lot_event_data = ParkingLotEventData(
+        parkingLot=lot,
+        event=event,
+        distanceFromEvent=distance_from_event,
+        availableMotorcycleSpots=available_motorcycle_spots,
+        availableCarSpots=available_car_spots,
+        availableOversizeSpots=available_oversize_spots
+    )
+    lot_event_data.save()
+
+    # Create the parking spots for this lot and event
+    for i in range(available_motorcycle_spots):
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='1').save()
+    for i in range(available_car_spots):
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='2').save()
+    for i in range(available_oversize_spots):
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='3').save()
+
+    return HttpResponseRedirect(reverse('parkingapp:manage-lot'))
+
+
+# View to create new event. Runs within the supervisor homepage
+@login_required(login_url='parkingapp:sign-in')
+def create_event(request):
+    event_name = request.POST['event_name']
+    event_address = request.POST['event_address']
+    event_date = datetime.strptime(request.POST['event_date'], "%Y-%m-%d").date()
+
+    event = Event(name=event_name, address=event_address, date=event_date)
+    event.save()
+
+    return HttpResponseRedirect(reverse('parkingapp:supervisor-home'))
+
+
+# Supervisor overview
+@login_required(login_url='parkingapp:sign-in')
+def supervisor_home(request):
+    event_list = Event.objects.order_by('-date')
+    context = {'event_list': event_list}
+    return render(request, "parkingapp/supervisor_home.html", context)
 
 
 # Manage lot
-def manage_lot(request, account_id, lot_id):
-    account = User.objects.get(pk=account_id)
-    context = {'account': account, }
+@login_required(login_url='parkingapp:sign-in')
+def manage_lot(request):
+    lot_list = request.user.parkinglot_set.all()
+    event_list = Event.objects.order_by('-date')
+    context = {'lot_list': lot_list, 'event_list': event_list}
     return render(request, "parkingapp/manage_lot.html", context)
 
+
+# Reserve parking spot
+@login_required(login_url='parkingapp:sign-in')
+def reserve_spot(request):
+    event_list = Event.objects.order_by('-date')
+    parking_list = []
+    spot_type = None
+    selected_event_id = None
+
+
+    if request.method == 'POST':
+        selected_event_id = request.POST['selected-event']
+        spot_type = request.POST['spot-type']
+
+        event = Event.objects.get(id=selected_event_id)
+        if spot_type == "1":
+            parking_list = event.parkingloteventdata_set.filter(
+                availableMotorcycleSpots__gte=1
+            ).order_by(
+                '-distanceFromEvent'
+            )
+        elif spot_type == "2":
+            parking_list = event.parkingloteventdata_set.filter(
+                availableCarSpots__gte=1
+            ).order_by(
+                '-distanceFromEvent'
+            )
+        elif spot_type == "3":
+            parking_list = event.parkingloteventdata_set.filter(
+                availableOversizeSpots__gte=1
+            ).order_by(
+                '-distanceFromEvent'
+            )
+
+    context = {
+        'event_list': event_list,
+        'parking_list': parking_list,
+        'spot_type': spot_type,
+        'selected_event_id': selected_event_id
+    }
+    return render(request, "parkingapp/reserve_spot.html", context)
+
+
+@login_required(login_url='parkingapp:sign-in')
+def make_reservation(request, lot_data_id, selected_event_id, spot_type):
+    lot_data = ParkingLotEventData.get(id=lot_data_id)
+    parking_spots = lot_data.ParkingSpot_set.objects.filter(
+            spotType=spot_type
+        ).filter(
+            renter=None
+        )
+    parking_spot = parking_spots[0]
+    parking_spot.update(renter=request.user)
+    parking_spot.save()
+    
+
+    return HttpResponseRedirect(reverse('parkingapp:index'))
+
+
+# Account details
+@login_required(login_url='parkingapp:sign-in')
+def account_info(request):
+    context = {}
+    return render(request, "parkingapp/account_info.html", context)
+
+@login_required(login_url='parkingapp:sign-in')
+def events(request):
+    context={}
+    return render(request, "parkingapp/events.html", context)
+
+@login_required(login_url='parkingapp:sign-in')
+def transfer_funds(request):
+    context = {}
+    return render(request, "parkingapp/transfer_funds.html", context)
+
+
 # Verification portal
-def lot_attendant_home(request, account_id):
-    account = User.objects.get(pk=account_id)
-    context = {'account': account, }
+@login_required(login_url='parkingapp:sign-in')
+def lot_attendant_home(request):
+    context = {}
     return render(request, "parkingapp/lot_attendant_home.html", context)
 
 
 # Verification confirmation
+@login_required(login_url='parkingapp:sign-in')
 def lot_attendant_confirmation(request):
-    pass
-
-# Supervisor view to create event
-def create_event(request):
     pass
 
 
 # Supervisor view to manage already listed events
+@login_required(login_url='parkingapp:sign-in')
 def manage_event(request):
     pass
-
-
-# Supervisor overview
-def supervisor_home(request, account_id):
-    account = User.objects.get(pk=account_id)
-    context = {'account': account, }
-    return render(request, "parkingapp/supervisor_home.html", context)

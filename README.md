@@ -15,8 +15,9 @@ The project will kept in the folder "app".
 Collaborators should have a forked repository of the app in Alex’s account of the project "group-7", in their Github. Each collaborator should clone the forked repository. Before each meeting, collaborators should submit a pull request so we can monitor progress and discuss issues. 
 
 ## Tool stack description and setup procedure
-Django – convenient framework for this app since it comes with a simple SQLLite database. Since this app will use the database features while staying relatively small, Django was the obvious choice.
-Python – Django uses Python, and we are all very familiar with it. 
+Django – convenient framework for this app since it comes with a simple SQLLite database. Since this app will use the database features while staying relatively small, Django was the obvious choice.  
+Python – Django uses Python, and we are all very familiar with it.   
+Bootstrap - Useful for UI styling purposes and a consistent UI experience.  
 
 ## Build instructions
 Clone the project in gitbash.
