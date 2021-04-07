@@ -12,10 +12,18 @@
 
         <div class="container m-auto">
             <div class="rounded bg-light row justify-content-center  p-3">
-                <form class="form row justify-content-center" action="{% url 'parkingapp:create-account'%}" method="post">
-                    {% csrf_token %}
-                    <ul style="list-style-type: none;">
-                        <li>
+                {% comment %} <form class="form row justify-content-center" action="{% url 'parkingapp:create-account'%}" method="post"> {% endcomment %}
+                <form method="POST" action="{% url 'parkingapp:sign-up' %}">
+                {% csrf_token %}
+                {% comment %} {% if form.errors %}
+                <p> There are errors in the form!</p>
+                {% endif %} {% endcomment %}
+
+                {{ form.as_p }}
+                {{ profile_form.as_p }}
+                <input type="submit" value="Submit" class="center btn btn-primary"><br>
+                    {% comment %} <ul style="list-style-type: none;">
+                        <li>    
                             <label for="first_name" class="text-primary">First Name:</label>
                             <input type="text" name="first_name" placeholder="First Name" class="form-control"><br>
                         </li>
@@ -40,7 +48,7 @@
                                 <input type="submit" value="Submit" class="center btn btn-primary"><br>
                             </div>
                         </li>
-                    </ul>
+                    </ul> {% endcomment %}
                 </form>
             </div>
         </div>

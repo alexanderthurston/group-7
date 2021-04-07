@@ -4,7 +4,7 @@ from . import views
 app_name = 'parkingapp'
 urlpatterns = [
     path('', views.sign_in, name='sign-in'),
-    path('index/<int:account_id>', views.index, name='index'),
+    path('index', views.index, name='index'),
     path('sign-up', views.sign_up, name="sign-up"),
     path('find-account', views.find_account, name="find-account"),
     path('create-account', views.create_account, name="create-account"),

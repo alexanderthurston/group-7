@@ -13,7 +13,7 @@
     <nav class="navbar fixed-top navbar-dark bg-primary" role="navigation">
         <h1 class="navbar-brand">BigBlueParkingGenie</h1>
         <div>
-            <span> <!--- Directory --->
+            <span> 
                 <a href="{% url 'parkingapp:index' account.id %}"><button type="button" class="btn btn-light active">Home</button></a>
                 <a href="{% url 'parkingapp:account-info' account.id %}"><button type="button" class="btn btn-light">Account</button></a>
                 <a href="{% url 'parkingapp:reserve-spot' account.id %}"><button type="button" class="btn btn-light">Find Parking</button></a>
@@ -22,8 +22,13 @@
             </span>
         </div>
     </nav>
-
-    <div> <!--- view specific code here --->
+    <h1> This is the home page </h1> 
+    <h2> Your username is {{ username }} </h2>
+    {% if user.is_authenticated %}
+    <h3> Your email is {{ user.email }} </h3>
+    <h3> Your phone number is {{ user.phone_number }} </h3>
+    {% endif %}
+    {% comment %} <div> <!--- view specific code here --->
 
     </div>
 
@@ -34,7 +39,7 @@
                 <a href="{% url 'parkingapp:supervisor-home' account.id %}"><button type="button" class="btn btn-light btn-lg">Supervisor Home</button></a>
             </span>
         </div>
-    </nav>
+    </nav> {% endcomment %}
 
 
 {% comment %}
