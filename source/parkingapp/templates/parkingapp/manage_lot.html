@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <title>Manage Your Lot</title>
@@ -22,85 +23,81 @@
         </nav>
 
         <div class="container m-5 p-5"> <!--- view specific code here --->
-            <div class="container m-auto">
-            <h4 class="m-2 p-2 text-primary">Create New Lot</h4>
-                <div class="rounded bg-light row justify-content-center p-3">
-                    <form action="{% url 'parkingapp:create-lot' %}" method="post">
-                        {% csrf_token %}
-                        <label for="lot_nickname" class="text-primary">Lot Nickname:</label>
-                        <input type="text" id="lot_nickname" name="lot_nickname" class="form-control"><br>
-
-                        <label for="lot_address" class="text-primary">Lot Address:</label>
-                        <input type="text" id="lot_address" name="lot_address" class="form-control"><br>
-
-                        <label for="num-motorcycle-spots" class="text-primary">Number of Motorcycle Parking Spots:</label>
-                        <input type="text" id="num-motorcycle-spots" name="num-motorcycle-spots" class="form-control"><br>
-
-                        <label for="num-car-spots" class="text-primary">Number of Car Parking Spots:</label>
-                        <input type="text" id="num-car-spots" name="num-car-spots" class="form-control"><br>
-
-                        <label for="num-oversize-spots" class="text-primary">Number of Bus/RV Parking Spots:</label>
-                        <input type="text" id="num-oversize-spots" name="num-oversize-spots" class="form-control"><br>
-
-                        <label for="motorcycle-spot-price" class="text-primary">Motorcycle Spot Price:</label>
-                        <input type="text" id="motorcycle-spot-price" name="motorcycle-spot-price" class="form-control"><br>
-
-                        <label for="car-spot-price" class="text-primary">Car Spot Price:</label>
-                        <input type="number" id="car-spot-price" name="car-spot-price" class="form-control"><br>
-
-                        <label for="oversize-spot-price" class="text-primary">Oversize Spot Price:</label>
-                        <input type="text" id="oversize-spot-price" name="oversize-spot-price" class="form-control"><br>
-
-                        <div class="row justify-content-center">
-                            <input type="submit" value="Submit" class="center btn btn-primary"><br>
-                        </div>
-                    </form>
+            <div class="container rounded bg-light">
+                <div id="account-info" class="row justify-content-left m-3 p-3">
+                    <div class="col-med-10">
+                        <h3 class="text-primary">Manage Lots</h3>
+                    </div>
+                    <div class="col-sm-5 container text-right">
+                        <a href="{% url 'parkingapp:new-lot' %}"><button type="button" class="btn btn-primary">List A New Lot!</button></a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="container m-auto">
-                <h4 class="m-2 p-2 text-primary">List Your Lots</h4>
-                <div class="rounded bg-light row justify-content-center p-3">
-                    {% if lot_list %}
+                <div class="row m-1 p-1">
+                     {% if lot_list %}
                         {% for lot in lot_list %}
-                            <div class="rounded bg-light row justify-content-center p-3">
-                                <h5 class="pr-3">{{lot.nickname}}</h5><br>
-                                <p class="pr-3">{{lot.address}}</p>
-                                {% if event_list %}
-                                <form action="{% url 'parkingapp:list-lot' lot.id %}" method="post">
-                                    {% csrf_token %}
-                                    <label for="event" class="text-primary">Choose Event:</label>
-                                    <select id="event" name="selected-event" class="form-control">
-                                        {% for event in event_list %}
-                                        <option type="text" value="{{event.id}}">{{event.name}} - {{event.date}}</option>
-                                        {% endfor %}
-                                    </select><br>
-                                    <label for="distance-from-event" class="text-primary">Distance from Event:</label>
-                                    <input type="number" id="distance-from-event" name="distance-from-event" class="form-control"><br>
-                                    <div class="row justify-content-center">
-                                        <input type="submit" value="List" class="center btn btn-primary"><br>
-                                    </div>
-                                </form>
-                                {% endif %}
-                            </div>
+
+                                <div class="rounded bg-light justify-content-left p-3">
+                                    <h5 class="pr-3">{{lot.nickname}}<span class="pr-3 font-weight-normal">- {{lot.address}}</span>
+                                            <div class="btn-group dropright p-2">
+                                                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Manage Availability</button>
+                                                <div class="dropdown-menu" >
+                                                    {% if event_list %}
+
+                                                    <form action="{% url 'parkingapp:list-lot' lot.id %}" method="post" class="px-4 py-3">
+                                                        {% csrf_token %}
+                                                        <div class="form-group">
+                                                            <label for="event" class="text-primary">Choose Event:</label>
+                                                            <select id="event" name="selected-event" class="custom-select" onclick="stopPropagation(event)">
+                                                                {% for event in event_list %}
+                                                                <option type="text" value="{{event.id}}">{{event.name}} - {{event.date}}</option>
+                                                                {% endfor %}
+                                                            </select><br>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="distance-from-event" class="text-primary">Distance from Event in Miles:</label>
+                                                            <input type="number" id="distance-from-event" name="distance-from-event" class="form-control"><br>
+                                                        </div>
+                                                        <div class="row justify-content-center">
+                                                            <input type="submit" value="Publish Availability" class="center btn btn-primary"><br>
+                                                        </div>
+                                                    </form>
+
+                                                    {% endif %}
+
+                                                </div>
+                                            </div>
+                                        </span>
+                                    </h5>
+
+
+                                </div>
+
                         {% endfor %}
-                    {% else %}
+                     {% else %}
                             <div class="container rounded bg-light row justify-content-center p-3 m-3 ">
                                 <p class="text-danger font-weight-bold">No Lots Yet!</p>
                             </div>
-                    {% endif %}
+                     {% endif %}
                 </div>
-
             </div>
         </div>
-        <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation">
+
+ <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation" style="z-index: -1;">
             <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->
                 <span>
-                    <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light btn-lg">Lot Assistant Home</button></a>
-                    <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light btn-lg">Supervisor Home</button></a>
+                    <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light btn-sm">Lot Assistant Home</button></a>
+                    <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light btn-sm">Supervisor Home</button></a>
                 </span>
             </div>
-        </nav>
+    </nav>
+
+
+
     </div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="{% static 'parkingapp/script.js' %}"></script>
 </body>
 </html>

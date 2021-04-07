@@ -70,8 +70,6 @@ def sign_out(request):
 # Update account info
 @login_required(login_url='parkingapp:sign-in')
 def update_account(request):
-    context = {}
-
     form = UserChangeForm()
 
     if request.method == 'POST':
@@ -87,6 +85,11 @@ def update_account(request):
     context = {'form': form}
     return render(request, "parkingapp/update_account.html", context)
 
+
+@login_required(login_url='parkingapp:sign-in')
+def new_lot(request):
+    context = {}
+    return render(request, "parkingapp/new_lot.html", context)
 
 # Creates a new parking lot, which can then be listed for events.
 # Gets called by a form on the manage_lot page
@@ -246,7 +249,8 @@ def account_info(request):
 
 @login_required(login_url='parkingapp:sign-in')
 def events(request):
-    context={}
+    event_list = Event.objects.order_by('-date')
+    context = {'event_list': event_list}
     return render(request, "parkingapp/events.html", context)
 
 @login_required(login_url='parkingapp:sign-in')
