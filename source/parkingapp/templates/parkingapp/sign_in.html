@@ -9,8 +9,6 @@
 <body class="bg-primary">
     <div id="login" class="m-3 p-3">
         <h1 class="text-center text-light p-5">Welcome to the Big Blue Parking Genie!</h1>
-        {% if error_message %} <p><strong>{{ error_message }}</strong></p> {% endif %}
-
         <div class="container m-auto">
             {% if messages %}
             <div class="rounded bg-danger text-center m-3 p-3">
@@ -32,8 +30,6 @@
                     </div>
                 </form>
             </div>
-
-
         </div>
 
         <div class="fixed-bottom bg-light row justify-content-center align-items-center">
