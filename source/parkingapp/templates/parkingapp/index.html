@@ -22,16 +22,40 @@
     </nav>
 
     <div class="container m-5 p-5"> <!--- view specific code here --->
-        <div class="container m-auto">
+        <div class="container m-2">
             <h4 class="m-2 p-2 text-primary">Your Reservations</h4>
-            <div class="rounded bg-light row justify-content-center p-3">
+            <div class="rounded bg-light col-lg-12 p-1">
                 {% if reservation_list %}
                 {% for reservation in reservation_list %}
-                <p>Address: {{reservation.parkingLotEventData.parkingLot.address}}</p><br>
-                <p>Event: {{reservation.parkingLotEventData.event.name}} - {{reservation.parkingLotEventData.event.date}}</p>
+                <div class="rounded row justify-content-center m-1 p-1 bg-primary text-light">
+                    <h5 class="p-1">Reservation for {{reservation.parkingLotEventData.event.name}} <small>on {{reservation.parkingLotEventData.event.date}} | Find your parking reservation at {{reservation.parkingLotEventData.parkingLot.address}}</small></h5>
+
+                </div>
                 {% endfor %}
+                {% else %}
+                <div class="rounded bg-light row justify-content-center p-1 m-1 ">
+                    <p class="text-danger font-weight-bold">No Reservations Yet!</p>
+                </div>
                 {% endif %}
             </div>
+        </div>
+
+        <div class="container m-2">
+            <h4 class="m-2 p-2 text-primary">All Events</h4>
+            <div class="rounded bg-light col-lg-12 p-1">
+            {% if event_list %}
+            {% for event in event_list %}
+                <div class="rounded row justify-content-center p-1">
+                    <span class="border-top border-bottom border-primary"><h5 class="p-1 text-dark">{{event.name}} <small>on {{event.date}} @ {{event.address}}</small></h5></span>
+
+                </div>
+            {% endfor %}
+            </div>
+            {% else %}
+            <div class="container rounded bg-light row justify-content-center p-3 m-3 ">
+                <p class="text-danger font-weight-bold">No Events Yet!</p>
+            </div>
+            {% endif %}
         </div>
     </div>
 

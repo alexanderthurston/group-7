@@ -18,7 +18,10 @@ from datetime import datetime
 @login_required(login_url='parkingapp:sign-in')
 def index(request):
     reservation_list = request.user.parkingspot_set.all()
-    context = {"reservation_list": reservation_list}
+    event_list = Event.objects.order_by('date')
+
+    context = {"reservation_list": reservation_list,
+               'event_list': event_list}
     return render(request, "parkingapp/index.html", context)
 
 
