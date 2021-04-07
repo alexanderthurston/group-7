@@ -178,7 +178,8 @@ def supervisor_home(request):
 def manage_lot(request):
     lot_list = request.user.parkinglot_set.all()
     event_list = Event.objects.order_by('-date')
-    context = {'lot_list': lot_list, 'event_list': event_list}
+    lot_event_data_list = ParkingLotEventData.objects.filter(parkingLot__in=request.user.parkinglot_set.all())
+    context = {'lot_list': lot_list, 'event_list': event_list, 'lot_event_data_list': lot_event_data_list}
     return render(request, "parkingapp/manage_lot.html", context)
 
 
@@ -232,6 +233,15 @@ def make_reservation(request, lot_data_id, selected_event_id, spot_type):
         ).filter(
             renter=None
         )
+    # TODO: this code here!
+    if spot_type == "1":
+        lot_data.availableMotorcycleSpots = lot_data.availableMotorcycleSpots - 1
+    elif spot_type == "2":
+        lot_data.availableCarSpots = lot_data.availableCarSpots - 1
+    else:
+        lot_data.availableOversizeSpots = lot_data.availableOversizeSpots - 1
+    lot_data.save()
+
     parking_spot = parking_spots[0]
     parking_spot.renter = request.user
     parking_spot.save()
@@ -248,7 +258,7 @@ def transfer_funds(request):
         request.user.profile.balance = balance
         request.user.save()
         return HttpResponseRedirect(reverse('parkingapp:account-info'))
-        
+
     context = {}
     return render(request, "parkingapp/transfer_funds.html", context)
 

@@ -57,7 +57,27 @@
                     </form>
                 </div>
             </div>
+            <div class="container m-auto">
+                <h4 class="m-2 p-2 text-primary">Your Listings</h4>
+                <div class="rounded bg-light row justify-content-center p-3">
+                    {% if lot_event_data_list %}
+                        {% for lot_event_data in lot_event_data_list %}
+                            <div class="rounded bg-light row justify-content-center p-3">
+                                <h5 class="pr-3">{{lot_event_data.parkingLot.nickname}}</h5><br>
+                                <h5 class="pr-3">{{lot_event_data.event.name}}</h5><br>
+                                <p> Motorcycle Spots left: {{lot_event_data.availableMotorcycleSpots}}</p>
+                                <p> Car spots left: {{lot_event_data.availableCarSpots}}</p>
+                                <p> Oversize spots left: {{lot_event_data.availableOversizeSpots}}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                            <div class="container rounded bg-light row justify-content-center p-3 m-3 ">
+                                <p class="text-danger font-weight-bold">No Listings Yet!</p>
+                            </div>
+                    {% endif %}
+                </div>
 
+            </div>
             <div class="container m-auto">
                 <h4 class="m-2 p-2 text-primary">List Your Lots</h4>
                 <div class="rounded bg-light row justify-content-center p-3">
