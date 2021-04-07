@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import decimal
 
 from .forms import UserCreationFormExtended
 
@@ -238,6 +239,20 @@ def make_reservation(request, lot_data_id, selected_event_id, spot_type):
     return HttpResponseRedirect(reverse('parkingapp:index'))
 
 
+@login_required(login_url='parkingapp:sign-in')
+def transfer_funds(request):
+    if request.method == "POST":
+        amount_to_transfer = request.POST['amount']
+        balance = request.user.profile.balance
+        balance += decimal.Decimal(amount_to_transfer)
+        request.user.profile.balance = balance
+        request.user.save()
+        return HttpResponseRedirect(reverse('parkingapp:account-info'))
+        
+    context = {}
+    return render(request, "parkingapp/transfer_funds.html", context)
+
+
 # Account details
 @login_required(login_url='parkingapp:sign-in')
 def account_info(request):
@@ -248,11 +263,6 @@ def account_info(request):
 def events(request):
     context={}
     return render(request, "parkingapp/events.html", context)
-
-@login_required(login_url='parkingapp:sign-in')
-def transfer_funds(request):
-    context = {}
-    return render(request, "parkingapp/transfer_funds.html", context)
 
 
 # Verification portal
