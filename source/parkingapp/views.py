@@ -143,11 +143,11 @@ def list_lot(request, lot_id):
 
     # Create the parking spots for this lot and event
     for i in range(available_motorcycle_spots):
-        ParkingSpot(parkingLotEventData=lot_event_data, spotType='1').save()
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='1', price=lot.motorcycleSpotPrice).save()
     for i in range(available_car_spots):
-        ParkingSpot(parkingLotEventData=lot_event_data, spotType='2').save()
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='2', price=lot.carSpotPrice).save()
     for i in range(available_oversize_spots):
-        ParkingSpot(parkingLotEventData=lot_event_data, spotType='3').save()
+        ParkingSpot(parkingLotEventData=lot_event_data, spotType='3', price=lot.oversizeSpotPrice).save()
 
     return HttpResponseRedirect(reverse('parkingapp:manage-lot'))
 
@@ -233,7 +233,7 @@ def make_reservation(request, lot_data_id, selected_event_id, spot_type):
         ).filter(
             renter=None
         )
-    # TODO: this code here!
+
     if spot_type == "1":
         lot_data.availableMotorcycleSpots = lot_data.availableMotorcycleSpots - 1
     elif spot_type == "2":
@@ -245,7 +245,13 @@ def make_reservation(request, lot_data_id, selected_event_id, spot_type):
     parking_spot = parking_spots[0]
     parking_spot.renter = request.user
     parking_spot.save()
-    
+
+    request.user.profile.balance -= parking_spot.price
+    request.user.save()
+    parking_spot.parkingLotEventData.parkingLot.owner.profile.balance += decimal.Decimal(0.75) * parking_spot.price
+    parking_spot.parkingLotEventData.parkingLot.owner.save()
+    # Add supervisor payment here
+
     return HttpResponseRedirect(reverse('parkingapp:index'))
 
 
