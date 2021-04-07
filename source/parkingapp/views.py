@@ -16,7 +16,8 @@ from datetime import datetime
 # Homepage
 @login_required(login_url='parkingapp:sign-in')
 def index(request):
-    context = {}
+    reservation_list = request.user.parkingspot_set.all()
+    context = {"reservation_list": reservation_list}
     return render(request, "parkingapp/index.html", context)
 
 
@@ -224,17 +225,16 @@ def reserve_spot(request):
 
 @login_required(login_url='parkingapp:sign-in')
 def make_reservation(request, lot_data_id, selected_event_id, spot_type):
-    lot_data = ParkingLotEventData.get(id=lot_data_id)
-    parking_spots = lot_data.ParkingSpot_set.objects.filter(
+    lot_data = ParkingLotEventData.objects.get(id=lot_data_id)
+    parking_spots = lot_data.parkingspot_set.filter(
             spotType=spot_type
         ).filter(
             renter=None
         )
     parking_spot = parking_spots[0]
-    parking_spot.update(renter=request.user)
+    parking_spot.renter = request.user
     parking_spot.save()
     
-
     return HttpResponseRedirect(reverse('parkingapp:index'))
 
 
