@@ -9,7 +9,6 @@ urlpatterns = [
     path('sign-out', views.sign_out, name="sign-out"),
     path('update-account', views.update_account, name="update-account"),
     path('account-info', views.account_info, name="account-info"),
-    path('events', views.events, name="events"),
     path('transfer-funds', views.transfer_funds, name="transfer-funds"),
     path('lot-attendant-home', views.lot_attendant_home, name="lot-attendant-home"),
     path('reserve-spot', views.reserve_spot, name="reserve-spot"),

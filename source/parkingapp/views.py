@@ -188,7 +188,7 @@ def create_event(request):
 # Supervisor overview
 @login_required(login_url='parkingapp:sign-in')
 def supervisor_home(request):
-    event_list = Event.objects.order_by('-date')
+    event_list = Event.objects.order_by('date')
     context = {'event_list': event_list}
     return render(request, "parkingapp/supervisor_home.html", context)
 
@@ -197,7 +197,7 @@ def supervisor_home(request):
 @login_required(login_url='parkingapp:sign-in')
 def manage_lot(request):
     lot_list = request.user.parkinglot_set.all()
-    event_list = Event.objects.order_by('-date')
+    event_list = Event.objects.order_by('date')
     lot_event_data_list = ParkingLotEventData.objects.filter(parkingLot__in=request.user.parkinglot_set.all())
     context = {'lot_list': lot_list, 'event_list': event_list, 'lot_event_data_list': lot_event_data_list}
     return render(request, "parkingapp/manage_lot.html", context)
@@ -206,7 +206,7 @@ def manage_lot(request):
 # Reserve parking spot
 @login_required(login_url='parkingapp:sign-in')
 def reserve_spot(request):
-    event_list = Event.objects.order_by('-date')
+    event_list = Event.objects.order_by('date')
     parking_list = []
     spot_type = None
     selected_event_id = None
@@ -294,12 +294,6 @@ def transfer_funds(request):
 def account_info(request):
     context = {}
     return render(request, "parkingapp/account_info.html", context)
-
-@login_required(login_url='parkingapp:sign-in')
-def events(request):
-    event_list = Event.objects.order_by('-date')
-    context = {'event_list': event_list}
-    return render(request, "parkingapp/events.html", context)
 
 
 # Verification portal
