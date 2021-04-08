@@ -14,7 +14,6 @@
             <span> <!--- Directory --->
                 <a href="{% url 'parkingapp:index' %}"><button type="button" class="btn btn-light">Home</button></a>
                 <a href="{% url 'parkingapp:account-info' %}"><button type="button" class="btn btn-light">Account</button></a>
-                <a href="{% url 'parkingapp:events' %}"><button type="button" class="btn btn-light">Events</button></a>
                 <a href="{% url 'parkingapp:reserve-spot' %}"><button type="button" class="btn btn-light">Find Parking</button></a>
                 <a href="{% url 'parkingapp:manage-lot' %}"><button type="button" class="btn btn-light">List Your Lot</button></a>
                 <a href="{% url 'parkingapp:sign-out'%}"><button type="button" class="btn btn-danger">Log Out</button></a>
@@ -106,8 +105,8 @@
  <nav class="navbar fixed-bottom navbar-dark justicy-content-right bg-primary" role="navigation" style="z-index: -1;">
             <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->
                 <span>
-                    <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light btn-sm">Lot Assistant Home</button></a>
-                    <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light btn-sm">Supervisor Home</button></a>
+                    <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light">Lot Assistant Home</button></a>
+                    <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light">Supervisor Home</button></a>
                 </span>
             </div>
     </nav>
