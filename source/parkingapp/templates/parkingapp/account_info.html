@@ -37,7 +37,6 @@
                         <li class="text-primary">First Name: {{user.first_name}}</li>
                         <li class="text-primary">Last Name: {{user.last_name}}</li>
                         <li class="text-primary">Username: {{user.username}}</li>
-                        <!-- <li class="text-primary">Password: {{user.password}}</li> -->
                         <li class="text-primary">Email: {{user.email}}</li>
                     </ul>
                 </div>
@@ -45,7 +44,7 @@
             <div class="container rounded bg-light">
                 <div id="account-balance" class="row justify-content-left m-3 p-3">
                     <div class="col-med-10">
-                         <h3 class="text-primary">Account Balance:</h3>
+                         <h3 class="text-primary">Account Balance: ${{user.profile.balance}}</h3>
                     </div>
                     <div class="col-sm-5 container text-right">
                         <a href="{% url 'parkingapp:transfer-funds' %}"><button type="button" class="btn btn-primary">Transfer Funds</button></a>

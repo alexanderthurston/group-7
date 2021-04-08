@@ -63,6 +63,7 @@ class ParkingSpot(models.Model):
     renter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     # spaceCode = models.CharField(max_length=50)
     spotType = models.CharField(max_length=1)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=1.0)
 
 # class ParkingSpotType(models.Model):
 #     parkingSpotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)

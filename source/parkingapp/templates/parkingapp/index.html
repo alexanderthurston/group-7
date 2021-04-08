@@ -20,14 +20,19 @@
             </span>
         </div>
     </nav>
-    <h1> This is the home page </h1> 
-    <h2> Your username is {{ username }} </h2>
-    {% if user.is_authenticated %}
-    <h3> Your email is {{ user.email }} </h3>
-    <h3> Your phone number is {{ user.phone_number }} </h3>
-    {% endif %}
-    {% comment %} <div> <!--- view specific code here --->
 
+    <div class="container m-5 p-5"> <!--- view specific code here --->
+        <div class="container m-auto">
+            <h4 class="m-2 p-2 text-primary">Your Reservations</h4>
+            <div class="rounded bg-light row justify-content-center p-3">
+                {% if reservation_list %}
+                {% for reservation in reservation_list %}
+                <p>Address: {{reservation.parkingLotEventData.parkingLot.address}}</p><br>
+                <p>Event: {{reservation.parkingLotEventData.event.name}} - {{reservation.parkingLotEventData.event.date}}</p>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
     </div>
 
     <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation">
@@ -37,20 +42,6 @@
                 <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light btn-lg">Supervisor Home</button></a>
             </span>
         </div>
-<<<<<<< HEAD
-    </nav> {% endcomment %}
-
-
-{% comment %}
-    {% else %}
-        <div class="black stuff-box shadowed">
-            <h1>Please login to access this page.</h1>
-            <a href=""><button>Sign-In</button></a>
-        </div>
-    {% endif %}
-{% endcomment %}
-=======
     </nav>
->>>>>>> 8bd9c32e12dc5071346cf042e814c41f341cb2fe
 </body>
 </html>
