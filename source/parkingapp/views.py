@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import decimal
 
-from .forms import UserCreationFormExtended
+from .forms import UserCreationFormExtended,EditProfileForm
 
 from .models import Event, ParkingLot, ParkingLotEventData, ParkingSpot
 
@@ -48,6 +48,7 @@ def sign_in(request):
 
 
 # First time sign-up
+# @login_required
 def sign_up(request):
     if request.user.is_authenticated:
         return redirect('parkingapp:index')
@@ -75,20 +76,33 @@ def sign_out(request):
 # Update account info
 @login_required(login_url='parkingapp:sign-in')
 def update_account(request):
-    form = UserChangeForm()
 
     if request.method == 'POST':
-        form = UserChangeForm(request.POST)
+        form = EditProfileForm(request.POST, instance=request.user)
+
         if form.is_valid():
             form.save()
             return redirect('parkingapp:account-info')
-            # first_name = request.POST.get('first_name')
-            # last_name = request.POST.get('last_name')
-            # username = request.POST.get('username')
-            # email = request.POST.get('email')
-            # password = request.POST.get('password')
-    context = {'form': form}
-    return render(request, "parkingapp/update_account.html", context)
+    else:
+        form = EditProfileForm(instance=request.user)
+        args = {'form': form}
+        return render(request, 'parkingapp/update_account.html',args)
+    # context = {}
+
+    # form = UserChangeForm()
+
+    # if request.method == 'POST':
+    #     form = UserChangeForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect('parkingapp:account-info')
+    #         # first_name = request.POST.get('first_name')
+    #         # last_name = request.POST.get('last_name')
+    #         # username = request.POST.get('username')
+    #         # email = request.POST.get('email')
+    #         # password = request.POST.get('password')
+    # context = {'form': form}
+    # return render(request, "parkingapp/update_account.html", context)
 
 
 @login_required(login_url='parkingapp:sign-in')
