@@ -83,23 +83,6 @@ def update_account(request):
         form = EditProfileForm(instance=request.user)
         args = {'form': form}
         return render(request, 'parkingapp/update_account.html',args)
-    # context = {}
-
-    # form = UserChangeForm()
-
-    # if request.method == 'POST':
-    #     form = UserChangeForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect('parkingapp:account-info')
-    #         # first_name = request.POST.get('first_name')
-    #         # last_name = request.POST.get('last_name')
-    #         # username = request.POST.get('username')
-    #         # email = request.POST.get('email')
-    #         # password = request.POST.get('password')
-    # context = {'form': form}
-    # return render(request, "parkingapp/update_account.html", context)
-
 
 # Creates a new parking lot, which can then be listed for events.
 # Gets called by a form on the manage_lot page
