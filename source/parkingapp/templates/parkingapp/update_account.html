@@ -11,6 +11,46 @@
 
         <div class="container m-auto"><br>
             <div class="container m-auto"><br>
+<<<<<<< HEAD
+            <div class="rounded bg-light row justify-content-center  p-3"><br>
+                <form class="form row justify-content-center" action="" method="POST">
+                    {% csrf_token %}
+                    <!-- {{ form.as_p }} -->
+                    <ul style="list-style-type: none;">
+                        <li>
+                            <label for="first_name" class="text-primary">First Name:</label>
+                            {{form.first_name}}
+                        </li>
+                        <li>
+                            <label for="last_name" class="text-primary">Last Name:</label>
+                            {{form.last_name}}
+                        </li>
+                        <li>
+                            <label for="email" class="text-primary">Email:</label>
+                            {{form.email}}
+                        </li>
+                        <li>
+                            <label for="username" class="text-primary">Username:</label>
+                            {{form.username}}
+                        </li>
+                        <li>
+                            <label for="password1" class="text-primary">Password:</label>
+                            {{form.password1}}
+                        </li>
+                        <li>
+                            <label for="password2" class="text-primary">Confirm Password:</label>
+                            {{form.password2}}
+                        </li>
+                        {{form.errors}}
+                        <li>
+                            <div class="row justify-content-center">
+                                <input type="submit" value="Submit" class="center btn btn-primary"><br>
+                            </div>
+                        </li>
+                     </ul>  
+                    <!-- <input type="submit" value="Submit" class="center btn btn-primary"> -->
+                </form>
+=======
                 <div class="rounded bg-light row justify-content-center  p-3"><br>
                     <form class="form row justify-content-center" action="" method="POST">
                         {% csrf_token %}
@@ -19,6 +59,7 @@
                         <input type="submit" value="Submit" class="center btn btn-primary">
                     </form>
                 </div>
+>>>>>>> 845b21b2da78fbb871e7478c1627a545d00e963a
             </div>
         </div>
     </div>
