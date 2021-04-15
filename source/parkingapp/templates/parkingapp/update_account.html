@@ -11,6 +11,7 @@
 
         <div class="container m-auto"><br>
             <div class="container m-auto"><br>
+<<<<<<< HEAD
             <div class="rounded bg-light row justify-content-center  p-3"><br>
                 <form class="form row justify-content-center" action="" method="POST">
                     {% csrf_token %}
@@ -49,6 +50,16 @@
                      </ul>  
                     <!-- <input type="submit" value="Submit" class="center btn btn-primary"> -->
                 </form>
+=======
+                <div class="rounded bg-light row justify-content-center  p-3"><br>
+                    <form class="form row justify-content-center" action="" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                        <input type="submit" value="Submit" class="center btn btn-primary">
+                    </form>
+                </div>
+>>>>>>> 845b21b2da78fbb871e7478c1627a545d00e963a
             </div>
         </div>
     </div>

@@ -18,7 +18,10 @@ from datetime import datetime
 @login_required(login_url='parkingapp:sign-in')
 def index(request):
     reservation_list = request.user.parkingspot_set.all()
-    context = {"reservation_list": reservation_list}
+    event_list = Event.objects.order_by('date')
+
+    context = {"reservation_list": reservation_list,
+               'event_list': event_list}
     return render(request, "parkingapp/index.html", context)
 
 
@@ -83,6 +86,28 @@ def update_account(request):
         form = EditProfileForm(instance=request.user)
         args = {'form': form}
         return render(request, 'parkingapp/update_account.html',args)
+    # context = {}
+
+    # form = UserChangeForm()
+
+    # if request.method == 'POST':
+    #     form = UserChangeForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect('parkingapp:account-info')
+    #         # first_name = request.POST.get('first_name')
+    #         # last_name = request.POST.get('last_name')
+    #         # username = request.POST.get('username')
+    #         # email = request.POST.get('email')
+    #         # password = request.POST.get('password')
+    # context = {'form': form}
+    # return render(request, "parkingapp/update_account.html", context)
+
+
+@login_required(login_url='parkingapp:sign-in')
+def new_lot(request):
+    context = {}
+    return render(request, "parkingapp/new_lot.html", context)
 
 # Creates a new parking lot, which can then be listed for events.
 # Gets called by a form on the manage_lot page
@@ -162,7 +187,7 @@ def create_event(request):
 # Supervisor overview
 @login_required(login_url='parkingapp:sign-in')
 def supervisor_home(request):
-    event_list = Event.objects.order_by('-date')
+    event_list = Event.objects.order_by('date')
     context = {'event_list': event_list}
     return render(request, "parkingapp/supervisor_home.html", context)
 
@@ -171,7 +196,7 @@ def supervisor_home(request):
 @login_required(login_url='parkingapp:sign-in')
 def manage_lot(request):
     lot_list = request.user.parkinglot_set.all()
-    event_list = Event.objects.order_by('-date')
+    event_list = Event.objects.order_by('date')
     lot_event_data_list = ParkingLotEventData.objects.filter(parkingLot__in=request.user.parkinglot_set.all())
     context = {'lot_list': lot_list, 'event_list': event_list, 'lot_event_data_list': lot_event_data_list}
     return render(request, "parkingapp/manage_lot.html", context)
@@ -180,7 +205,7 @@ def manage_lot(request):
 # Reserve parking spot
 @login_required(login_url='parkingapp:sign-in')
 def reserve_spot(request):
-    event_list = Event.objects.order_by('-date')
+    event_list = Event.objects.order_by('date')
     parking_list = []
     spot_type = None
     selected_event_id = None
@@ -268,11 +293,6 @@ def transfer_funds(request):
 def account_info(request):
     context = {}
     return render(request, "parkingapp/account_info.html", context)
-
-@login_required(login_url='parkingapp:sign-in')
-def events(request):
-    context={}
-    return render(request, "parkingapp/events.html", context)
 
 
 # Verification portal
