@@ -9,7 +9,7 @@ The Big Blue Parking Genie web app will be stored in this repository.
 
 The documentation and resources for this project will be kept in the "docs" folder. This includes use case diagrams, the project plan, database diagrams, and more as the project progresses. 
 
-The project will kept in the folder "app". 
+The project will kept in the folder "source/parkingapp". 
 
 ## Version-control procedures
 Collaborators should have a forked repository of the app in Alex’s account of the project "group-7", in their Github. Each collaborator should clone the forked repository. Before each meeting, collaborators should submit a pull request so we can monitor progress and discuss issues. 
