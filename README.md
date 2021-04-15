@@ -79,4 +79,4 @@ Visit the parkingapp/admin site to view the data.
 High Fidelity Prototype - Database Diagram
 Low Fidelity Prototype - UX Diagram
 
-See grading instructions in /docs
+The sprint documents are in docs/planning.
