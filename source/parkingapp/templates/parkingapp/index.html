@@ -26,7 +26,7 @@
             <div class="rounded bg-light col-lg-12 p-1">
                 {% if reservation_list %}
                 {% for reservation in reservation_list %}
-                <div class="rounded row justify-content-center m-1 p-1 bg-primary text-light">
+                <div class="rounded row justify-content-center m-1 p-1">
                     <h5 class="p-1">Reservation for {{reservation.parkingLotEventData.event.name}} <small>on {{reservation.parkingLotEventData.event.date}} | Find your parking reservation at {{reservation.parkingLotEventData.parkingLot.address}}</small></h5>
 
                 </div>
@@ -45,7 +45,7 @@
             {% if event_list %}
             {% for event in event_list %}
                 <div class="rounded row justify-content-center p-1">
-                    <span class="border-top border-bottom border-primary"><h5 class="p-1 text-dark">{{event.name}} <small>on {{event.date}} @ {{event.address}}</small></h5></span>
+                    <h5 class="p-1 text-dark">{{event.name}} <small>on {{event.date}} @ {{event.address}}</small></h5>
 
                 </div>
             {% endfor %}
@@ -61,7 +61,7 @@
     <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation">
         <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->
             <span>
-                <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light">Lot Assistant Home</button></a>
+                <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light">Lot Attendant Home</button></a>
                 <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light">Supervisor Home</button></a>
             </span>
         </div>

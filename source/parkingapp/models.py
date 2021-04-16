@@ -2,9 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 from django.utils import timezone
-
 
 # This is how we store data that Django's default User class doesn't have built in.
 # We can add more fields to this later if we need to
@@ -12,6 +10,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
     isSupervisor = models.BooleanField(default=False)
+    def __str__(self):
+        return self.user.first_name + " " + self.user.last_name
 
 
 @receiver(post_save, sender=User)
@@ -25,13 +25,11 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-
 class Event(models.Model):
     # userID = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     date = models.DateField(default=timezone.now)
-
 
     def __str__(self):
         return self.eventName + " " + self.eventDate
