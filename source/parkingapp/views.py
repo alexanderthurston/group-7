@@ -76,7 +76,6 @@ def sign_out(request):
 # Update account info
 @login_required(login_url='parkingapp:sign-in')
 def update_account(request):
-
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
 
