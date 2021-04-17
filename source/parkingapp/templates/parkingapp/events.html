@@ -9,7 +9,7 @@
     <nav class="navbar fixed-top navbar-dark bg-primary" role="navigation">
         <h1 class="navbar-brand">BigBlueParkingGenie</h1>
         <div>
-            <span> <!--- Directory --->
+            <span> <!-- Directory -->
                 <a href="{% url 'parkingapp:index' %}"><button type="button" class="btn btn-light">Home</button></a>
                 <a href="{% url 'parkingapp:account-info' %}"><button type="button" class="btn btn-light">Account</button></a>
                 <a href="{% url 'parkingapp:events' %}"><button type="button" class="btn btn-light active">Events</button></a>
@@ -20,7 +20,7 @@
         </div>
     </nav>
 
-    <div class="container m-5 p-5"> <!--- view specific code here --->
+    <div class="container m-5 p-5"> <!-- view specific code here -->
             <div class="container m-auto">
             <h4 class="m-2 p-2 text-primary">All Events</h4>
             {% if event_list %}
@@ -40,7 +40,7 @@
     </div>
 
     <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation">
-        <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->
+        <div> <!-- Functionality for Lot Owners, Attendants, Supervisors -->
             <span>
                 {% if user.parkinglot_set.all|length > 0 %}
                 <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light">Lot Attendant Home</button></a>
