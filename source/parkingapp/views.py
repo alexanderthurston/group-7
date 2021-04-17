@@ -308,7 +308,14 @@ def account_info(request):
 # Verification portal
 @login_required(login_url='parkingapp:sign-in')
 def lot_attendant_home(request):
-    context = {}
+    reservation_list = []
+    
+
+    if request.method == "POST":
+        confirmation_code = request.POST['confirmation-code']
+        reservation_list = ParkingSpot.objects.filter(confirmationCode=confirmation_code)
+
+    context = {'reservation_list': reservation_list}
     return render(request, "parkingapp/lot_attendant_home.html", context)
 
 

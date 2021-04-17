@@ -24,12 +24,30 @@
             <h4 class="m-2 p-2 text-primary">Verify Parking</h4>
             <div class="rounded bg-light row justify-content-center p-3">
                 <form method="post">
+                    {% csrf_token %}
                     <label for="confirmation-code" class="text-primary">Enter Customer's Confirmation Code:</label><br>
                     <input type="text" id="confirmation-code" name="confirmation-code">
                     <input type="submit" value="Verify" class="btn btn-primary">
                 </form>
             </div>
         </div>
+        {% if reservation_list %}
+        <div class="container m-auto">
+            <h4 class="m-2 p-2 text-primary">Reservations</h4>
+            <div class="rounded bg-light row justify-content-center p-3">
+                {% for reservation in reservation_list %}
+                <div class="row m-1 p-1">
+                    <ul style="list-style-type: none;">
+                        <li class="text-primary">First Name: {{reservation.renter.first_name}}</li>
+                        <li class="text-primary">Last Name: {{reservation.renter.last_name}}</li>
+                        <li class="text-primary">Lot: {{reservation.parkingLotEventData.parkingLot.nickname}}</li>
+                        <li class="text-primary">Spot Number: {{reservation.id}}</li>
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
     </div>
 
     <nav class="navbar fixed-bottom navbar-light bg-primary" role="navigation">
