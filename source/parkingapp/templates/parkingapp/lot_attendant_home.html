@@ -36,7 +36,9 @@
         <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->
             <span>
                 <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light active">Lot Attendant Home</button></a>
+                {% if user.profile.isSupervisor %}
                 <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light">Supervisor Home</button></a>
+                {% endif %}
             </span>
         </div>
     </nav>
