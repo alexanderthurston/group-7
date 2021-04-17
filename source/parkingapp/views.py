@@ -174,6 +174,9 @@ def list_lot(request, lot_id):
 # View to create new event. Runs within the supervisor homepage
 @login_required(login_url='parkingapp:sign-in')
 def create_event(request):
+    if not request.user.profile.isSupervisor:
+        return HttpResponseRedirect(reverse('parkingapp:index'))
+        
     event_name = request.POST['event_name']
     event_address = request.POST['event_address']
     event_date = datetime.strptime(request.POST['event_date'], "%Y-%m-%d").date()
@@ -187,6 +190,9 @@ def create_event(request):
 # Supervisor overview
 @login_required(login_url='parkingapp:sign-in')
 def supervisor_home(request):
+    if not request.user.profile.isSupervisor:
+        return HttpResponseRedirect(reverse('parkingapp:index'))
+
     event_list = Event.objects.order_by('date')
     context = {'event_list': event_list}
     return render(request, "parkingapp/supervisor_home.html", context)
