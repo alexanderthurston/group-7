@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import decimal
+import random
 
 from .forms import UserCreationFormExtended,EditProfileForm
 
@@ -269,6 +270,7 @@ def make_reservation(request, lot_data_id, selected_event_id, spot_type):
 
     parking_spot = parking_spots[0]
     parking_spot.renter = request.user
+    parking_spot.confirmationCode = str(random.randrange(100000, 999999))
     parking_spot.save()
 
     request.user.profile.balance -= parking_spot.price
