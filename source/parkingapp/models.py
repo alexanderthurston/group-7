@@ -2,9 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 from django.utils import timezone
-
 
 # This is how we store data that Django's default User class doesn't have built in.
 # We can add more fields to this later if we need to
@@ -12,6 +10,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
     isSupervisor = models.BooleanField(default=False)
+    def __str__(self):
+        return self.user.first_name + " " + self.user.last_name
 
 
 @receiver(post_save, sender=User)
@@ -25,13 +25,11 @@ def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
 
-
 class Event(models.Model):
-    # userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     date = models.DateField(default=timezone.now)
-
 
     def __str__(self):
         return self.eventName + " " + self.eventDate
@@ -61,26 +59,7 @@ class ParkingLotEventData(models.Model):
 class ParkingSpot(models.Model):
     parkingLotEventData = models.ForeignKey(ParkingLotEventData, on_delete=models.CASCADE)
     renter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    # spaceCode = models.CharField(max_length=50)
     spotType = models.CharField(max_length=1)
     price = models.DecimalField(max_digits=8, decimal_places=2, default=1.0)
+    confirmationCode = models.CharField(max_length=6)
 
-# class ParkingSpotType(models.Model):
-#     parkingSpotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
-#     typeName = models.CharField(max_length=20)
-
-# class ParkingSpotHistory(models.Model):
-#     spotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
-#     rentStartDate = models.DateTimeField()
-#     rentEndDate = models.DateTimeField()
-
-# class TransactionHistory(models.Model):
-#     userID = models.ForeignKey(User, on_delete=models.CASCADE)
-#     eventID = models.ForeignKey(Event, on_delete=models.CASCADE)
-#     parkingSpotID = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
-#     transDate = models.DateTimeField()
-#     amount = models.DecimalField(decimal_places=2, max_digits=5)
-
-# class TransactionType(models.Model):
-#     transHistoryID = models.ForeignKey(TransactionHistory, on_delete=models.CASCADE)
-#     transTypeName = models.CharField(max_length=20)

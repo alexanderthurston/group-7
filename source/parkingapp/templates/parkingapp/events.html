@@ -42,8 +42,12 @@
     <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation">
         <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->
             <span>
-                <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light btn-lg">Lot Assistant Home</button></a>
-                <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light btn-lg">Supervisor Home</button></a>
+                {% if user.parkinglot_set.all|length > 0 %}
+                <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light">Lot Attendant Home</button></a>
+                {% endif %}
+                {% if user.profile.isSupervisor %}
+                <a href="{% url 'parkingapp:supervisor-home' %}"><button type="button" class="btn btn-light">Supervisor Home</button></a>
+                {% endif %}
             </span>
         </div>
     </nav>

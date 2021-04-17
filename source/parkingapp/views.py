@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import decimal
+import random
 
 from .forms import UserCreationFormExtended,EditProfileForm
 
@@ -182,11 +183,14 @@ def list_lot(request, lot_id):
 # View to create new event. Runs within the supervisor homepage
 @login_required(login_url='parkingapp:sign-in')
 def create_event(request):
+    if not request.user.profile.isSupervisor:
+        return HttpResponseRedirect(reverse('parkingapp:index'))
+        
     event_name = request.POST['event_name']
     event_address = request.POST['event_address']
     event_date = datetime.strptime(request.POST['event_date'], "%Y-%m-%d").date()
 
-    event = Event(name=event_name, address=event_address, date=event_date)
+    event = Event(supervisor=request.user, name=event_name, address=event_address, date=event_date)
     event.save()
 
     return HttpResponseRedirect(reverse('parkingapp:supervisor-home'))
@@ -195,6 +199,9 @@ def create_event(request):
 # Supervisor overview
 @login_required(login_url='parkingapp:sign-in')
 def supervisor_home(request):
+    if not request.user.profile.isSupervisor:
+        return HttpResponseRedirect(reverse('parkingapp:index'))
+
     event_list = Event.objects.order_by('date')
     context = {'event_list': event_list}
     return render(request, "parkingapp/supervisor_home.html", context)
@@ -271,13 +278,16 @@ def make_reservation(request, lot_data_id, selected_event_id, spot_type):
 
     parking_spot = parking_spots[0]
     parking_spot.renter = request.user
+    parking_spot.confirmationCode = str(random.randrange(100000, 999999))
     parking_spot.save()
 
     request.user.profile.balance -= parking_spot.price
     request.user.save()
     parking_spot.parkingLotEventData.parkingLot.owner.profile.balance += decimal.Decimal(0.75) * parking_spot.price
     parking_spot.parkingLotEventData.parkingLot.owner.save()
-    # Add supervisor payment here
+
+    parking_spot.parkingLotEventData.event.supervisor.profile.balance += decimal.Decimal(0.25) * parking_spot.price
+    parking_spot.parkingLotEventData.event.supervisor.save()
 
     return HttpResponseRedirect(reverse('parkingapp:index'))
 
@@ -306,7 +316,14 @@ def account_info(request):
 # Verification portal
 @login_required(login_url='parkingapp:sign-in')
 def lot_attendant_home(request):
-    context = {}
+    reservation_list = []
+    
+
+    if request.method == "POST":
+        confirmation_code = request.POST['confirmation-code']
+        reservation_list = ParkingSpot.objects.filter(confirmationCode=confirmation_code)
+
+    context = {'reservation_list': reservation_list}
     return render(request, "parkingapp/lot_attendant_home.html", context)
 
 
