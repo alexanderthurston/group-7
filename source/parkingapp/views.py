@@ -178,7 +178,7 @@ def create_event(request):
     event_address = request.POST['event_address']
     event_date = datetime.strptime(request.POST['event_date'], "%Y-%m-%d").date()
 
-    event = Event(name=event_name, address=event_address, date=event_date)
+    event = Event(supervisor=request.user, name=event_name, address=event_address, date=event_date)
     event.save()
 
     return HttpResponseRedirect(reverse('parkingapp:supervisor-home'))

@@ -26,7 +26,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Event(models.Model):
-    # userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    supervisor = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     date = models.DateField(default=timezone.now)

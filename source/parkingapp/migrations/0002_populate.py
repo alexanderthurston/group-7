@@ -48,12 +48,14 @@ def populate_db(apps, schema_editor):
 
     # Events
     event1 = Event.objects.create(
+        supervisor=supervisorProfile.user,
         name='USU Basketball',
         address='900 E 900 N, Logan, UT 84322',
         date=date(2021, 6, 10),
     )
 
     event2 = Event.objects.create(
+        supervisor=supervisorProfile.user,
         name='USU Football',
         address='E 1000 N, Logan, UT 84341',
         date=date(2021, 5, 10),
