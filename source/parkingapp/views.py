@@ -1,8 +1,9 @@
-from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth.forms import UserChangeForm,PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect
 from django.utils import timezone
 from django.urls import reverse
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import decimal
@@ -86,22 +87,29 @@ def update_account(request):
         form = EditProfileForm(instance=request.user)
         args = {'form': form}
         return render(request, 'parkingapp/update_account.html',args)
-    # context = {}
 
-    # form = UserChangeForm()
-
+@login_required(login_url='parkingapp:sign-in')
+def password_change(request):
+    form = PasswordChangeForm(user=request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request.form.user)
+    
+    return render(request, 'parkingapp/change-password.html', {'form':form})
     # if request.method == 'POST':
-    #     form = UserChangeForm(request.POST)
+
+    #     form = PasswordChangeForm(request.POST, instance=request.user)
+
     #     if form.is_valid():
     #         form.save()
     #         return redirect('parkingapp:account-info')
-    #         # first_name = request.POST.get('first_name')
-    #         # last_name = request.POST.get('last_name')
-    #         # username = request.POST.get('username')
-    #         # email = request.POST.get('email')
-    #         # password = request.POST.get('password')
-    # context = {'form': form}
-    # return render(request, "parkingapp/update_account.html", context)
+    # else:
+    #     form = PasswordsChangeForm(instance=request.user)
+    #     args = {'form': form}
+    #     return render(request, 'parkingapp/change-password.html',args)
+
 
 
 @login_required(login_url='parkingapp:sign-in')
@@ -312,3 +320,5 @@ def lot_attendant_confirmation(request):
 @login_required(login_url='parkingapp:sign-in')
 def manage_event(request):
     pass
+
+
