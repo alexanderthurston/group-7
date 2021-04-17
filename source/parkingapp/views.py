@@ -269,7 +269,9 @@ def make_reservation(request, lot_data_id, selected_event_id, spot_type):
     request.user.save()
     parking_spot.parkingLotEventData.parkingLot.owner.profile.balance += decimal.Decimal(0.75) * parking_spot.price
     parking_spot.parkingLotEventData.parkingLot.owner.save()
-    # Add supervisor payment here
+
+    parking_spot.parkingLotEventData.event.supervisor.profile.balance += decimal.Decimal(0.25) * parking_spot.price
+    parking_spot.parkingLotEventData.event.supervisor.save()
 
     return HttpResponseRedirect(reverse('parkingapp:index'))
 
