@@ -17,7 +17,7 @@ def populate_db(apps, schema_editor):
     supervisor = User.objects.create(
         email='alexthurston@hotmail.com',
         username='alexthurston',
-        password=make_password('cs3450lover'),
+        password=make_password('cs3450lover1'),
         first_name='Alex',
         last_name='Thurston',
     )
@@ -53,6 +53,7 @@ def populate_db(apps, schema_editor):
         address='900 E 900 N, Logan, UT 84322',
         date=date(2021, 6, 10),
     )
+    event1.save()
 
     event2 = Event.objects.create(
         supervisor=supervisorProfile.user,
@@ -60,13 +61,22 @@ def populate_db(apps, schema_editor):
         address='E 1000 N, Logan, UT 84341',
         date=date(2021, 5, 10),
     )
+    event2.save()
+
+    event3 = Event.objects.create(
+        supervisor=supervisorProfile.user,
+        name='USU Volleyball',
+        address='7400 Old Main Hill, Logan, UT 84322',
+        date=date(2021, 5, 10),
+    )
+    event3.save()
 
     # Lots
 
     lot1 = ParkingLot.objects.create(
         owner=lotAttendantProfile.user,
         nickname="Lot 1",
-        address="435 Logan Place",
+        address="435 Logan Place, Logan, UT 84342",
         numMotorcycleSpots=3,
         numCarSpots=5,
         numOversizeSpots=1,
@@ -79,7 +89,7 @@ def populate_db(apps, schema_editor):
     lot2 = ParkingLot.objects.create(
         owner=lotAttendantProfile.user,
         nickname="Lot 2",
-        address="123 Old Main Hill",
+        address="123 Old Main Hill, Logan, UT 84321",
         numMotorcycleSpots=5,
         numCarSpots=8,
         numOversizeSpots=2,
@@ -88,6 +98,19 @@ def populate_db(apps, schema_editor):
         oversizeSpotPrice=15,
     )
     lot2.save()
+
+    lot3 = ParkingLot.objects.create(
+        owner=lotAttendantProfile.user,
+        nickname="Lot 2",
+        address="422 E 500N, Logan, UT 84322",
+        numMotorcycleSpots=4,
+        numCarSpots=5,
+        numOversizeSpots=0,
+        motorcycleSpotPrice=5,
+        carSpotPrice=10,
+        oversizeSpotPrice=15,
+    )
+    lot3.save()
 
     # Lot Event Info
     lot1EventInfo = ParkingLotInfo.objects.create(
@@ -110,6 +133,16 @@ def populate_db(apps, schema_editor):
     )
     lot2EventInfo.save()
 
+    lot3EventInfo = ParkingLotInfo.objects.create(
+        parkingLot=lot3,
+        event=event3,
+        distanceFromEvent=2.8,
+        availableMotorcycleSpots=lot3.numMotorcycleSpots,
+        availableCarSpots=lot3.numCarSpots,
+        availableOversizeSpots=lot3.numOversizeSpots,
+    )
+    lot3EventInfo.save()
+
     # Parking Spots
 
     # Lot1
@@ -128,6 +161,13 @@ def populate_db(apps, schema_editor):
     for i in range(lot2.numOversizeSpots):
         ParkingSpot(parkingLotEventData=lot2EventInfo, spotType='3', price=lot2.oversizeSpotPrice).save()
 
+    # Lot3
+    for i in range(lot3.numMotorcycleSpots):
+        ParkingSpot(parkingLotEventData=lot3EventInfo, spotType='1', price=lot3.motorcycleSpotPrice).save()
+    for i in range(lot3.numCarSpots):
+        ParkingSpot(parkingLotEventData=lot3EventInfo, spotType='2', price=lot3.carSpotPrice).save()
+    for i in range(lot3.numOversizeSpots):
+        ParkingSpot(parkingLotEventData=lot3EventInfo, spotType='3', price=lot3.oversizeSpotPrice).save()
 
 
 class Migration(migrations.Migration):
