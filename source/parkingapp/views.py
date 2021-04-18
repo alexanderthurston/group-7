@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 import decimal
 import random
 
-from .forms import UserCreationFormExtended,EditProfileForm
+from .forms import UpdatePassword, UserCreationFormExtended,EditProfileForm
 
 from .models import Event, ParkingLot, ParkingLotEventData, ParkingSpot
 
@@ -91,25 +91,21 @@ def update_account(request):
 
 @login_required(login_url='parkingapp:sign-in')
 def password_change(request):
-    form = PasswordChangeForm(user=request.user)
     if request.method == 'POST':
-        form = PasswordChangeForm(user=request.user, data=request.POST)
+        # form = UpdatePassword(request.user, request.POST)
+        form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
-            form.save()
-            update_session_auth_hash(request.form.user)
-    
+            user = form.save()
+            update_session_auth_hash(request,user)
+            messages.success(request, 'Your password was successfully changed!')
+            return redirect('parkingapp:account-info')
+        else:
+            messages.error(request,'Please correct the error below')
+    else:
+        # form=UpdatePassword(request.user)
+        form=PasswordChangeForm(request.user)
     return render(request, 'parkingapp/change-password.html', {'form':form})
-    # if request.method == 'POST':
-
-    #     form = PasswordChangeForm(request.POST, instance=request.user)
-
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect('parkingapp:account-info')
-    # else:
-    #     form = PasswordsChangeForm(instance=request.user)
-    #     args = {'form': form}
-    #     return render(request, 'parkingapp/change-password.html',args)
+   
 
 
 

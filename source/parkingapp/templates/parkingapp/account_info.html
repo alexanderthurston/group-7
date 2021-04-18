@@ -20,7 +20,13 @@
                 </span>
             </div>
         </nav><br>
-
+        {% if messages %}
+            <div class="rounded bg-danger text-center m-3 p-3">
+                {% for message in messages %}
+                    <p class="text-light font-weight-bold">{{message}}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="m-5 p-5"> <!-- view specific code here -->
             <div class="container rounded bg-light">
                 <div id="account-info" class="row justify-content-left m-3 p-3">

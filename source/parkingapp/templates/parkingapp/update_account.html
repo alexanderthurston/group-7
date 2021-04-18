@@ -7,14 +7,28 @@
 </head>
 <body class="bg-primary">
     <div id="sign-up">
-        <h1 class="text-center text-light p-5">Edit Your Account Information</h1>
-
+    <nav class="navbar fixed-top navbar-dark bg-primary" role="navigation">
+            <h1 class="navbar-brand">BigBlueParkingGenie</h1>
+            <div>
+                <span> <!-- Directory -->
+                    <a href="{% url 'parkingapp:index' %}"><button type="button" class="btn btn-light">Home</button></a>
+                    <a href="{% url 'parkingapp:account-info' %}"><button type="button" class="btn btn-light active">Account</button></a>
+                    <a href="{% url 'parkingapp:reserve-spot' %}"><button type="button" class="btn btn-light">Find Parking</button></a>
+                    <a href="{% url 'parkingapp:manage-lot' %}"><button type="button" class="btn btn-light">List Your Lot</button></a>
+                    <a href="{% url 'parkingapp:sign-out'%}"><button type="button" class="btn btn-danger">Log Out</button></a>
+                </span>
+            </div>
+        </nav><br>
         <div class="container m-auto"><br>
             <div class="container m-auto"><br>
+            <h1 class="text-center text-light p-5">Edit Your Account Information</h1>
+                
+            
             <div class="rounded bg-light row justify-content-center  p-3"><br>
                 <form class="form row justify-content-center" action="" method="POST">
                     {% csrf_token %}
                     <!-- {{ form.as_p }} -->
+
                     <ul style="list-style-type: none;">
                         <li>
                             <label for="first_name" class="text-primary">First Name:</label>
@@ -32,14 +46,6 @@
                             <label for="username" class="text-primary">Username:</label>
                             {{form.username}}
                         </li>
-                        <!-- <li>
-                            <label for="password1" class="text-primary">Password:</label>
-                            {{form.password1}}
-                        </li>
-                        <li>
-                            <label for="password2" class="text-primary">Confirm Password:</label>
-                            {{form.password2}}
-                        </li> -->
                         {{form.errors}}
                         <li>
                             <div class="row justify-content-center">
