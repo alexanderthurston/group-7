@@ -92,7 +92,6 @@ def update_account(request):
 @login_required(login_url='parkingapp:sign-in')
 def password_change(request):
     if request.method == 'POST':
-        # form = UpdatePassword(request.user, request.POST)
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
@@ -102,7 +101,6 @@ def password_change(request):
         else:
             messages.error(request,'Please correct the error below')
     else:
-        # form=UpdatePassword(request.user)
         form=PasswordChangeForm(request.user)
     return render(request, 'parkingapp/change-password.html', {'form':form})
    
