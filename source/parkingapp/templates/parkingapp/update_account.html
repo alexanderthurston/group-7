@@ -48,13 +48,13 @@
                         </li>
                         {{form.errors}}
                         <li>
-                            <div class="row justify-content-center">
-                                <input type="submit" value="Submit" class="center btn btn-primary"><br>
+                            <div class="row justify-content-center p-1">
+                                <a href="{% url 'parkingapp:change-password' %}"><button type="button" class="btn btn-primary">Change Your Password</button></a>
                             </div>
                         </li>
                         <li>
-                            <div class="row justify-content-center">
-                                <a href="{% url 'parkingapp:change-password' %}"><button type="button" class="btn btn-light">Change Your Password</button></a>
+                            <div class="row justify-content-center p-1">
+                                <input type="submit" value="Submit" class="center btn btn-primary"><br>
                             </div>
                         </li>
                      </ul>  

@@ -98,8 +98,8 @@ def password_change(request):
             update_session_auth_hash(request,user)
             messages.success(request, 'Your password was successfully changed!')
             return redirect('parkingapp:account-info')
-        else:
-            messages.error(request,'Please correct the error below')
+        # else:
+        #     messages.error(request, 'Please correct the error below')
     else:
         form=PasswordChangeForm(request.user)
     return render(request, 'parkingapp/change-password.html', {'form':form})
