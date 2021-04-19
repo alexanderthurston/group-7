@@ -11,7 +11,7 @@
         <nav class="navbar fixed-top navbar-dark bg-primary" role="navigation">
             <h1 class="navbar-brand">BigBlueParkingGenie</h1>
             <div>
-                <span> <!--- Directory --->
+                <span> <!-- Directory -->
                     <a href="{% url 'parkingapp:index' %}"><button type="button" class="btn btn-light">Home</button></a>
                     <a href="{% url 'parkingapp:account-info' %}"><button type="button" class="btn btn-light active">Account</button></a>
                     <a href="{% url 'parkingapp:reserve-spot' %}"><button type="button" class="btn btn-light">Find Parking</button></a>
@@ -20,9 +20,16 @@
                 </span>
             </div>
         </nav><br>
-
-        <div class="m-5 p-5"> <!--- view specific code here --->
+        
+        <div class="m-5 p-5"> <!-- view specific code here -->
             <div class="container rounded bg-light">
+            {% if messages %}
+            <div class="rounded bg-danger text-center m-3 p-3">
+                {% for message in messages %}
+                    <p class="text-light font-weight-bold">{{message}}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
                 <div id="account-info" class="row justify-content-left m-3 p-3">
                     <div class="col-med-10">
                         <h3 class="text-primary">Your Account Info:</h3>
@@ -53,7 +60,7 @@
         </div>
 
         <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation">
-            <div> <!--- Functionality for Lot Owners, Attendants, Supervisors --->
+            <div> <!-- Functionality for Lot Owners, Attendants, Supervisors -->
                 <span>
                     {% if user.parkinglot_set.all|length > 0 %}
                     <a href="{% url 'parkingapp:lot-attendant-home' %}"><button type="button" class="btn btn-light">Lot Attendant Home</button></a>

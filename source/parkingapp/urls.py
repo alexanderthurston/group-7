@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+# from .views import password_change
+from django.contrib.auth import views as auth_views
 
 app_name = 'parkingapp'
 urlpatterns = [
@@ -8,6 +10,7 @@ urlpatterns = [
     path('sign-up', views.sign_up, name="sign-up"),
     path('sign-out', views.sign_out, name="sign-out"),
     path('update-account', views.update_account, name="update-account"),
+    path('change-password',views.password_change,name='change-password'),
     path('account-info', views.account_info, name="account-info"),
     path('transfer-funds', views.transfer_funds, name="transfer-funds"),
     path('lot-attendant-home', views.lot_attendant_home, name="lot-attendant-home"),
