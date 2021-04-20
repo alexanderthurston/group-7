@@ -61,8 +61,14 @@ Visit local host address in a browser to see the app running. The address should
 
 
 ## Unit testing instructions
-Unit tests will cover all use cases laid out in the use case diagrams. They can be found in the ```tests.py```file. Run the tests.py file to see the unit tests completed.
+Unit tests will cover all use cases laid out in the use case diagrams. They can be found in the ```tests.py```file. 
 
+To run the unit tests, make sure you are in the ```group-7/source/``` directory.
+Then 
+```bash
+$ python manage.py test
+````
+You should see all unit tests complete successfully.
 
 ## System testing instructions
 
@@ -76,7 +82,7 @@ Create a user in the parkingapp/sign-up page. Create an event, reserve a lot, an
 Visit the parkingapp/admin site to view the data.
 
 ## Other development notes, as needed
-High Fidelity Prototype - Database Diagram
+High Fidelity Prototype - Final ERD
 Low Fidelity Prototype - UX Diagram
 
 The sprint documents are in docs/planning.
