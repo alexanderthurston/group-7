@@ -45,28 +45,33 @@
             </div>
             {% if parking_list %}
             <h4 class="m-2 p-2 text-primary">Available Spots</h4>
-            <div class="rounded bg-light row justify-content-center p-3">
+            <div class="container rounded bg-light">
                 {% for lot in parking_list %}
-                <p>Distance from event: {{lot.distanceFromEvent}} </p>
+                <div class="rounded row justify-content-center p-3">
+                    <span>|| Distance from event: {{lot.distanceFromEvent}} |</span>
 
-                {% if spot_type == "1" %}
-                <p>Cost: ${{lot.parkingLot.motorcycleSpotPrice}} </p>
-                {% elif spot_type == "2" %}
-                <p>Cost: ${{lot.parkingLot.carSpotPrice}} </p>
-                {% else %}
-                <p>Cost: ${{lot.parkingLot.oversizeSpotPrice}} </p>
-                {% endif %}
-                {% if spot_type == "1" and user.profile.balance > lot.parkingLot.motorcycleSpotPrice or spot_type == "2" and user.profile.balance > lot.parkingLot.carSpotPrice or spot_type == "3" and user.profile.balance > lot.parkingLot.oversizeSpotPrice %}
-                <form action="{% url 'parkingapp:make-reservation' lot.id selected_event_id spot_type %}">
-                    {% csrf_token %}
-                    <input type="submit" value="Rent" class="center btn btn-primary"><br>
-                </form>
-                {% else %}
-                <p style="color:red;">Insufficient Funds to Rent</p>
-                {% endif %}
+                    {% if spot_type == "1" %}
+                        <span class="pr-1">| Cost: ${{lot.parkingLot.motorcycleSpotPrice}} ||</span>
+                    {% elif spot_type == "2" %}
+                        <span class="pr-1">| Cost: ${{lot.parkingLot.carSpotPrice}} ||</span>
+                    {% else %}
+                        <span class="pr-1">| Cost: ${{lot.parkingLot.oversizeSpotPrice}} ||</span>
+                    {% endif %}
+
+                    {% if spot_type == "1" and user.profile.balance > lot.parkingLot.motorcycleSpotPrice or spot_type == "2" and user.profile.balance > lot.parkingLot.carSpotPrice or spot_type == "3" and user.profile.balance > lot.parkingLot.oversizeSpotPrice %}
+                    <form action="{% url 'parkingapp:make-reservation' lot.id selected_event_id spot_type %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Rent" class="center btn btn-primary">
+                    </form>
+                    {% else %}
+                        <span style="color:red;">Insufficient Funds to Rent. Please update account balance in the Account tab.</span>
+                    {% endif %}
+
+                </div>
                 {% endfor %}
             </div>
             {% endif %}
+        </div>
     </div>
     <nav class="navbar fixed-bottom navbar-dark bg-primary" role="navigation">
         <div> <!-- Functionality for Lot Owners, Attendants, Supervisors -->

@@ -27,8 +27,8 @@
                 {% if reservation_list %}
                 {% for reservation in reservation_list %}
                 <div class="rounded row justify-content-center m-1 p-1">
-                    <h5 class="p-1">Reservation for {{reservation.parkingLotEventData.event.name}} <small>on {{reservation.parkingLotEventData.event.date}} | Find your parking reservation at {{reservation.parkingLotEventData.parkingLot.address}} | Confirmation code: 
-                    {{reservation.confirmationCode}}</small></h5>
+                    <h5 class="p-1">Reservation for {{reservation.parkingLotEventData.event.name}}<small> on {{reservation.parkingLotEventData.event.date}} at {{reservation.parkingLotEventData.parkingLot.address}} <span class="text-primary">Confirmation code: {{reservation.confirmationCode}}</span></small></h5>
+
 
                 </div>
                 {% endfor %}
