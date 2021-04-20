@@ -101,7 +101,7 @@ def populate_db(apps, schema_editor):
 
     lot3 = ParkingLot.objects.create(
         owner=lotAttendantProfile.user,
-        nickname="Lot 2",
+        nickname="Lot 3",
         address="422 E 500N, Logan, UT 84322",
         numMotorcycleSpots=4,
         numCarSpots=5,
@@ -113,27 +113,37 @@ def populate_db(apps, schema_editor):
     lot3.save()
 
     # Lot Event Info
-    lot1EventInfo = ParkingLotInfo.objects.create(
+    lot1Event1Info = ParkingLotInfo.objects.create(
         parkingLot=lot1,
         event=event1,
-        distanceFromEvent=3.2,
+        distanceFromEvent=3,
         availableMotorcycleSpots=lot1.numMotorcycleSpots,
         availableCarSpots=lot1.numCarSpots,
         availableOversizeSpots=lot1.numOversizeSpots,
     )
-    lot1EventInfo.save()
+    lot1Event1Info.save()
 
-    lot2EventInfo = ParkingLotInfo.objects.create(
+    lot1Event2Info = ParkingLotInfo.objects.create(
+        parkingLot=lot1,
+        event=event2,
+        distanceFromEvent=4,
+        availableMotorcycleSpots=lot1.numMotorcycleSpots,
+        availableCarSpots=lot1.numCarSpots,
+        availableOversizeSpots=lot1.numOversizeSpots,
+    )
+    lot1Event2Info.save()
+
+    lot2Event2Info = ParkingLotInfo.objects.create(
         parkingLot=lot2,
         event=event2,
-        distanceFromEvent=0.5,
+        distanceFromEvent=1,
         availableMotorcycleSpots=lot2.numMotorcycleSpots,
         availableCarSpots=lot2.numCarSpots,
         availableOversizeSpots=lot2.numOversizeSpots,
     )
-    lot2EventInfo.save()
+    lot2Event2Info.save()
 
-    lot3EventInfo = ParkingLotInfo.objects.create(
+    lot3Event3Info = ParkingLotInfo.objects.create(
         parkingLot=lot3,
         event=event3,
         distanceFromEvent=2.8,
@@ -141,33 +151,41 @@ def populate_db(apps, schema_editor):
         availableCarSpots=lot3.numCarSpots,
         availableOversizeSpots=lot3.numOversizeSpots,
     )
-    lot3EventInfo.save()
+    lot3Event3Info.save()
 
     # Parking Spots
 
-    # Lot1
+    # Lot1 Event1
     for i in range(lot1.numMotorcycleSpots):
-        ParkingSpot(parkingLotEventData=lot1EventInfo, spotType='1', price=lot1.motorcycleSpotPrice).save()
+        ParkingSpot(parkingLotEventData=lot1Event1Info, spotType='1', price=lot1.motorcycleSpotPrice).save()
     for i in range(lot1.numCarSpots):
-        ParkingSpot(parkingLotEventData=lot1EventInfo, spotType='2', price=lot1.carSpotPrice).save()
+        ParkingSpot(parkingLotEventData=lot1Event1Info, spotType='2', price=lot1.carSpotPrice).save()
     for i in range(lot1.numOversizeSpots):
-        ParkingSpot(parkingLotEventData=lot1EventInfo, spotType='3', price=lot1.oversizeSpotPrice).save()
+        ParkingSpot(parkingLotEventData=lot1Event1Info, spotType='3', price=lot1.oversizeSpotPrice).save()
 
-    # Lot2
+    # Lot1 Event2
+    for i in range(lot1.numMotorcycleSpots):
+        ParkingSpot(parkingLotEventData=lot1Event2Info, spotType='1', price=lot1.motorcycleSpotPrice).save()
+    for i in range(lot1.numCarSpots):
+        ParkingSpot(parkingLotEventData=lot1Event2Info, spotType='2', price=lot1.carSpotPrice).save()
+    for i in range(lot1.numOversizeSpots):
+        ParkingSpot(parkingLotEventData=lot1Event2Info, spotType='3', price=lot1.oversizeSpotPrice).save()
+
+    # Lot2 Event2
     for i in range(lot2.numMotorcycleSpots):
-        ParkingSpot(parkingLotEventData=lot2EventInfo, spotType='1', price=lot2.motorcycleSpotPrice).save()
+        ParkingSpot(parkingLotEventData=lot2Event2Info, spotType='1', price=lot2.motorcycleSpotPrice).save()
     for i in range(lot2.numCarSpots):
-        ParkingSpot(parkingLotEventData=lot2EventInfo, spotType='2', price=lot2.carSpotPrice).save()
+        ParkingSpot(parkingLotEventData=lot2Event2Info, spotType='2', price=lot2.carSpotPrice).save()
     for i in range(lot2.numOversizeSpots):
-        ParkingSpot(parkingLotEventData=lot2EventInfo, spotType='3', price=lot2.oversizeSpotPrice).save()
+        ParkingSpot(parkingLotEventData=lot2Event2Info, spotType='3', price=lot2.oversizeSpotPrice).save()
 
-    # Lot3
+    # Lot3 Event3
     for i in range(lot3.numMotorcycleSpots):
-        ParkingSpot(parkingLotEventData=lot3EventInfo, spotType='1', price=lot3.motorcycleSpotPrice).save()
+        ParkingSpot(parkingLotEventData=lot3Event3Info, spotType='1', price=lot3.motorcycleSpotPrice).save()
     for i in range(lot3.numCarSpots):
-        ParkingSpot(parkingLotEventData=lot3EventInfo, spotType='2', price=lot3.carSpotPrice).save()
+        ParkingSpot(parkingLotEventData=lot3Event3Info, spotType='2', price=lot3.carSpotPrice).save()
     for i in range(lot3.numOversizeSpots):
-        ParkingSpot(parkingLotEventData=lot3EventInfo, spotType='3', price=lot3.oversizeSpotPrice).save()
+        ParkingSpot(parkingLotEventData=lot3Event3Info, spotType='3', price=lot3.oversizeSpotPrice).save()
 
 
 class Migration(migrations.Migration):
