@@ -32,7 +32,7 @@ class Event(models.Model):
     date = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return self.eventName + " " + self.eventDate
+        return self.name + " " + " " + self.address + " " + self.supervisor.username
 
 class ParkingLot(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -44,7 +44,8 @@ class ParkingLot(models.Model):
     motorcycleSpotPrice = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
     carSpotPrice = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
     oversizeSpotPrice = models.DecimalField(max_digits=8, decimal_places=2, default=0.0)
-
+    def __str__(self):
+        return self.nickname
 
 class ParkingLotEventData(models.Model):
     parkingLot = models.ForeignKey(ParkingLot, on_delete=models.CASCADE)
